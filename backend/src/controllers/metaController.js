@@ -10,5 +10,36 @@ const metaWebhookHandshake = async (req, res) => {
     res.sendStatus(403);
   }
 };
+const metaWebhookPing = async (req, res) => {
+  const body = req.body;
+  console.log(body);
 
-module.exports = { metaWebhookHandshake };
+  if (body.object === "page") {
+    for (const entry of body.entry) {
+      const lead = entry.changes?.[0]?.value;
+      console.log(lead);
+      const leadgen_id = lead?.leadgen_id;
+
+      if (leadgen_id) {
+        console.log("New Lead ID:", leadgen_id);
+      }
+    }
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
+  }
+};
+const loginSuccess = function (req, res) {
+  res.send(`Welcome, ${req.user.displayName}`);
+};
+
+const loginFailure = function (req, res) {
+  res.send("Facebook login failed.");
+};
+
+module.exports = {
+  metaWebhookHandshake,
+  metaWebhookPing,
+  loginSuccess,
+  loginFailure,
+};

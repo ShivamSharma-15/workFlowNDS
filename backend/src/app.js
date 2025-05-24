@@ -24,9 +24,8 @@ app.use(express.json());
 //     },
 //   })
 // );
-
-app.use(limiter);
-
+app.set("trust proxy", 1);
+app.use(sessionMiddleware);
 // Routes for meta
 const metaWebhookRoute = require("./routes/metaRoute.js");
 app.use("/meta/instant-form", metaWebhookRoute);
@@ -35,5 +34,7 @@ app.use("/meta/instant-form", metaWebhookRoute);
 // app.use(
 //   express.static(path.join(__dirname, "..", "..", "frontend", "landing"))
 // );
-const PORT = process.env.PORT || 2375;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("Server running on 0.0.0.0:3000");
+});
