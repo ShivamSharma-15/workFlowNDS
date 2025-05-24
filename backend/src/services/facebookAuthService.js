@@ -9,7 +9,7 @@ function getFacebookStrategy(passport, callbackURL) {
         clientSecret: process.env.FB_APP_SECRET,
         callbackURL,
         profileFields: ["id", "displayName", "emails"],
-        request: [
+        scope: [
           "pages_show_list",
           "pages_read_engagement",
           "leads_retrieval",
