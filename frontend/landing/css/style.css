@@ -1,0 +1,171 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+}
+h1 {
+  margin-bottom: 20px;
+}
+.bold-text {
+  font-weight: bold;
+}
+
+/* Centering container */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  padding: 20px 20px 60px 20px;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Logo */
+.logo {
+  width: 300px;
+  height: auto;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: slideUp 1s ease forwards;
+  transition: transform 0.3s ease;
+}
+.logo:hover {
+  transform: scale(1.05);
+}
+/* Main heading */
+.coming-soon {
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  opacity: 0;
+  animation: fadeInText 1s ease forwards;
+  animation-delay: 0.5s;
+}
+
+/* Main message */
+.message {
+  font-size: 1.1rem;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #555;
+  opacity: 0;
+  animation: fadeInText 1s ease forwards;
+  animation-delay: 1s;
+}
+
+/* Signature */
+.signature {
+  font-style: italic;
+  color: #888;
+  font-size: 0.95rem;
+  opacity: 0;
+  animation: fadeInText 1s ease forwards;
+  animation-delay: 1.5s;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInText {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 123, 255, 0.05),
+    transparent 70%
+  );
+  animation: rotate 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animated-text span {
+  opacity: 0;
+  display: inline-block;
+  transform: scale(0.8);
+  animation: rippleIn 0.1s ease-out forwards;
+}
+
+@keyframes rippleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 600px) {
+  .coming-soon {
+    font-size: 2rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+
+  .signature {
+    font-size: 0.85rem;
+  }
+
+  .logo {
+    width: 90px;
+  }
+}
