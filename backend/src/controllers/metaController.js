@@ -52,8 +52,9 @@ const loginSuccess = async function (req, res) {
   );
   const pages = pagesResponse.data.data;
   const savePage = await getFbPages(pages, saveUser);
+  let subscriptionResults;
   if (pages && savePage) {
-    const subscriptionResults = await Promise.all(
+    subscriptionResults = await Promise.all(
       pages.map(async (page) => {
         try {
           await axios.post(
