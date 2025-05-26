@@ -11,13 +11,12 @@ function getFacebookStrategy(passport, callbackURL) {
         callbackURL,
         profileFields: ["id", "displayName", "emails"],
         scope: [
+          "pages_manage_metadata",
+          "pages_manage_ads",
           "pages_show_list",
           "pages_read_engagement",
           "leads_retrieval",
-          "pages_manage_ads",
-          "pages_manage_metadata",
         ],
-        authType: "rerequest",
       },
       function (accessToken, refreshToken, profile, done) {
         profile.accessToken = accessToken;
