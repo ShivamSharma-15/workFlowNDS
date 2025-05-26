@@ -32,4 +32,21 @@ async function savePage(pages, userId) {
 
   await Promise.all(promises);
 }
-module.exports = { saveUser, savePage };
+async function subscribe(successfulSubs) {
+  if (!successfulSubs || successfulSubs.length === 0) return;
+
+  const updateQuery = `
+    UPDATE facebook_pages
+    SET subscribed = 1
+    WHERE page_id = ?
+  `;
+
+  const promises = successfulSubs.map((entry) => {
+    const pageId = entry.pageId || entry.id;
+    if (!pageId) return null;
+    return pool.query(updateQuery, [pageId]);
+  });
+
+  await Promise.all(promises);
+}
+module.exports = { saveUser, savePage, subscribe };
