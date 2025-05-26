@@ -1,4 +1,7 @@
 require("dotenv").config();
+const axios = require("axios");
+const { getFbUser } = require("../services/facebookLeadService");
+const { user } = require("../config/dbConfig");
 const metaWebhookHandshake = async (req, res) => {
   const key = process.env.META_VERIFY_TOKEN;
   const mode = req.query["hub.mode"];
@@ -28,8 +31,18 @@ const metaWebhookPing = async (req, res) => {
     res.sendStatus(404);
   }
 };
-const loginSuccess = function (req, res) {
-  res.send(`Welcome, ${req.user.displayName}`);
+const loginSuccess = async function (req, res) {
+  if (!req.user || !req.user.accessToken) {
+    return res.status(401).send("User is not authenticated.");
+  }
+  const userAccessToken = req.user.accessToken;
+  const userName = req.user.displayName;
+  const saveUser = getFbUser(userAccessToken, userName);
+  if (saveUser) {
+    return res.status(200).json({
+      message: `Welcome, ${userName}`,
+    });
+  }
 };
 
 const loginFailure = function (req, res) {

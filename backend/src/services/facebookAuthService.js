@@ -19,7 +19,6 @@ function getFacebookStrategy(passport, callbackURL) {
       },
       function (accessToken, refreshToken, profile, done) {
         profile.accessToken = accessToken;
-        console.log(accessToken);
         return done(null, profile);
       }
     )
