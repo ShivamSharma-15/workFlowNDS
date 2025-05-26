@@ -1,4 +1,4 @@
-const { saveUser } = require("../model/fbModel");
+const { saveUser, savePage } = require("../model/fbModel");
 async function getFbUser(userAccessToken, userName) {
   const saveUsers = saveUser(userAccessToken, userName);
   return saveUsers;
@@ -11,4 +11,4 @@ async function getFbPages(pages, savedUser) {
     console.error("Error saving pages:", error);
   }
 }
-module.exports = { getFbUser };
+module.exports = { getFbUser, getFbPages };
