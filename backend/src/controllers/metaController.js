@@ -4,8 +4,9 @@ const {
   getFbUser,
   getFbPages,
   isSubbed,
+  getAllFbPages,
+  subscribeToAllPages,
 } = require("../services/facebookLeadService");
-const { user } = require("../config/dbConfig");
 const metaWebhookHandshake = async (req, res) => {
   const key = process.env.META_VERIFY_TOKEN;
   const mode = req.query["hub.mode"];
@@ -42,45 +43,15 @@ const loginSuccess = async function (req, res) {
   const userAccessToken = req.user.accessToken;
   const userName = req.user.displayName;
   const saveUser = await getFbUser(userAccessToken, userName);
-  const pagesResponse = await axios.get(
-    "https://graph.facebook.com/v22.0/me/accounts",
-    {
-      params: {
-        access_token: userAccessToken,
-      },
-    }
-  );
-  const pages = pagesResponse.data.data;
+  const pages = getAllFbPages(userAccessToken);
   const savePage = await getFbPages(pages, saveUser);
-  let subscriptionResults;
   if (pages && savePage) {
-    subscriptionResults = await Promise.all(
-      pages.map(async (page) => {
-        try {
-          await axios.post(
-            `https://graph.facebook.com/v22.0/${page.id}/subscribed_apps`,
-            null,
-            {
-              params: {
-                access_token: page.access_token,
-                subscribed_fields: "leadgen",
-              },
-            }
-          );
-          return { page: page.name, pageId: page.id, success: true };
-        } catch (err) {
-          return {
-            page: page.name,
-            pageId: page.id,
-            success: false,
-            error: err.response?.data || err.message,
-          };
-        }
-      })
-    );
+    const subscriptionResults = subscribeToAllPages(pages);
+    const successfulSubs = subscribeToAllPages(pages);
+    if (successfulSubs) {
+      const saveSubscription = await isSubbed(successfulSubs);
+    }
   }
-  const successfulSubs = subscriptionResults.filter((r) => r.success);
-  const saveSubscription = await isSubbed(successfulSubs);
   if (!pages || pages.length === 0) {
     return res
       .status(200)
