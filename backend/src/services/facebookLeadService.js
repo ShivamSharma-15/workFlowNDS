@@ -1,6 +1,6 @@
 const saveUser = require("../model/fbModel");
 async function getFbUser(userAccessToken, userName) {
-  const saveUser = saveUser(userAccessToken, userName);
-  return saveUser;
+  const saveUsers = saveUser(userAccessToken, userName);
+  return saveUsers;
 }
 module.exports = { getFbUser };
