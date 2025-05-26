@@ -8,12 +8,8 @@ const {
   metaWebhookPing,
 } = require("../controllers/metaController");
 const { limiter } = require("../middleware/limiter");
-// const { loginLimmiters } = require("../middleware/limiter");
-// const { login, logout } = require("../controllers/loginController");
-// const { travelBot, arDemo } = require("../controllers/demoController");
-// const { loginValidationRules } = require("../validators/loginValidators");
-// const userSessionAuth = require("../middleware/userSessionAuth");
-
+router.use(passport.initialize());
+router.use(passport.session());
 router.get("/webhooks", metaWebhookHandshake);
 router.post("/webhooks", express.json(), metaWebhookPing);
 router.get("/oauth", passport.authenticate("facebook"));

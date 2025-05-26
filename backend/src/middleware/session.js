@@ -17,6 +17,7 @@ const sessionMiddleware = session({
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
+  createDatabaseTable: true,
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
