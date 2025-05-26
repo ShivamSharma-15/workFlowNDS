@@ -7,9 +7,29 @@ async function saveUser(userAccessToken, userName) {
       [userName, userAccessToken]
     );
     if (rows.affectedRows !== 1) return null;
-    else return true;
+    else return rows.insertId;
   } catch (err) {
     console.log("Could not add");
   }
 }
-module.exports = { saveUser };
+async function savePage(pages, userId) {
+  const insertQuery = `
+    INSERT INTO facebook_pages (user_id, page_id, page_name, page_access_token)
+    VALUES (?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+      page_name = VALUES(page_name),
+      page_access_token = VALUES(page_access_token)
+  `;
+
+  const promises = pages.map((page) =>
+    pool.query(insertQuery, [
+      userId,
+      page.id,
+      page.name || null,
+      page.access_token,
+    ])
+  );
+
+  await Promise.all(promises);
+}
+module.exports = { saveUser, savePage };

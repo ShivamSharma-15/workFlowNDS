@@ -1,6 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
-const { getFbUser } = require("../services/facebookLeadService");
+const { getFbUser, getFbPages } = require("../services/facebookLeadService");
 const { user } = require("../config/dbConfig");
 const metaWebhookHandshake = async (req, res) => {
   const key = process.env.META_VERIFY_TOKEN;
@@ -38,6 +38,22 @@ const loginSuccess = async function (req, res) {
   const userAccessToken = req.user.accessToken;
   const userName = req.user.displayName;
   const saveUser = getFbUser(userAccessToken, userName);
+  const pagesResponse = await axios.get(
+    "https://graph.facebook.com/v22.0/me/accounts",
+    {
+      params: {
+        access_token: userAccessToken,
+      },
+    }
+  );
+  const pages = pagesResponse.data.data;
+  const savePage = getFbPages(pages, saveUser);
+
+  if (!pages || pages.length === 0) {
+    return res
+      .status(200)
+      .send("Login successful, but no pages were found for this user.");
+  }
   if (saveUser) {
     return res.status(200).json({
       message: `Welcome, ${userName}`,
