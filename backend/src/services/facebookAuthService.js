@@ -1,5 +1,6 @@
-const FacebookStrategy = require("passport-facebook").Strategy;
 require("dotenv").config();
+
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 function getFacebookStrategy(passport, callbackURL) {
   passport.use(

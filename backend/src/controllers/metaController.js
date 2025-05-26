@@ -11,6 +11,7 @@ const metaWebhookHandshake = async (req, res) => {
   }
 };
 const metaWebhookPing = async (req, res) => {
+  console.log("hi");
   const body = req.body;
   console.log(body);
 

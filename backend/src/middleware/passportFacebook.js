@@ -1,4 +1,5 @@
 const passport = require("passport");
+require("dotenv").config();
 const { getFacebookStrategy } = require("../services/facebookAuthService");
 
 // Apply only to this route
