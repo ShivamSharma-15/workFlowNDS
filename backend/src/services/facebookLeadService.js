@@ -153,7 +153,7 @@ function formatToMySQLDateTime(input) {
   const date = new Date(typeof input === "number" ? input * 1000 : input);
   return date.toISOString().slice(0, 19).replace("T", " ");
 }
-function formattingLead(leadAdd) {
+function formattingLead(leadData) {
   if (!leadData || !Array.isArray(leadData.field_data)) {
     return [];
   }
@@ -178,7 +178,7 @@ function formattingLead(leadAdd) {
 
   return formattedFields;
 }
-function extractContactInfo(leadAdd) {
+function extractContactInfo(leadData) {
   if (!leadData || !Array.isArray(leadData.field_data)) {
     return {};
   }
