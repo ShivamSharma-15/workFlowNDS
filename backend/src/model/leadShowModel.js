@@ -1,7 +1,6 @@
 const pool = require("../config/db");
 
 async function getValidationForLeadEntry(clientId, secretcode) {
-  console.log(secretcode);
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();

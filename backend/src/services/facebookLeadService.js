@@ -133,7 +133,6 @@ async function sendWhatsappUpdate(lead, leadAdd) {
   const pageAccessTokenRow = await getPageAccessToken(page_id);
   const secretCodeRow = await getSecretCode(page_id, lead_id);
   const secretCode = secretCodeRow.secret_code;
-  console.log(secretCode + " || " + secretCodeRow);
   const linkString = `${page_id}?secretcode=${secretCode}`;
   const pageAccessToken = pageAccessTokenRow.page_access_token;
   const form_id = lead?.form_id;
@@ -146,7 +145,6 @@ async function sendWhatsappUpdate(lead, leadAdd) {
         },
       }
     );
-    console.log(response);
     formData = response.data;
     formName = formData.name;
     formatData = formattingLead(leadAdd);
@@ -221,8 +219,6 @@ async function whatsappMessageSender(formName, formatContact, linkString) {
         },
       }
     );
-
-    console.log("Message sent:", response.data);
   } catch (error) {
     console.error(
       "Error sending message:",

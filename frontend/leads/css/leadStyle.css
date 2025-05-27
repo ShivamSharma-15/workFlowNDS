@@ -7,6 +7,7 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #222222;
+  background: #f6f6f6;
   font-size: 14px;
 }
 
@@ -17,11 +18,12 @@ body {
   justify-content: center;
   padding: 10px;
   background-color: #f6f6f6;
+  min-height: 100vh;
 }
 
 .sp-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 580px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
