@@ -59,7 +59,7 @@ async function getPageAccessToken(page_id) {
     if (rows.length !== 1) return null;
     else return rows[0].page_access_token;
   } catch (err) {
-    console.log("Could not find");
+    console.log("Could not find" + " " + page_id);
   }
 }
 async function leadAddDb(leadData, lead) {

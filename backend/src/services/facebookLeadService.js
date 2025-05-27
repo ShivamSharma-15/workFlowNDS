@@ -80,7 +80,7 @@ async function leadAdded(lead) {
   try {
     const leadgen_id = lead?.leadgen_id;
     const page_id = lead?.page_id;
-
+    console.log(page_id);
     if (!leadgen_id || !page_id) {
       console.warn("Missing leadgen_id or page_id");
       return null;
