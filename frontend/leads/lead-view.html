@@ -3,105 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Page</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        padding: 0;
-        margin: 0;
-      }
-
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        color: #222222;
-        font-size: 14px;
-      }
-
-      .sp-outer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        padding: 10px;
-        background-color: #f6f6f6;
-      }
-
-      .sp-card {
-        width: 100%;
-        max-width: 400px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-      .sp-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .logo {
-        width: 100%;
-        max-width: 100px;
-      }
-
-      img {
-        width: 100%;
-        height: auto;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-
-      .sp-table ul {
-        list-style: none;
-        padding: 10px 20px;
-      }
-
-      .sp-table li {
-        display: flex;
-        justify-content: space-between;
-        padding-block: 10px;
-        margin-top: 10px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .sp-table li:last-child {
-        border-bottom: 1px solid transparent;
-      }
-
-      .sp-table p {
-        font-weight: 600;
-      }
-
-      .sp-footer p {
-        font-size: 10px;
-        color: #c0c0c0;
-        text-align: center;
-        padding: 10px;
-        font-weight: 400;
-        border-top: 1px solid #ddd;
-      }
-    </style>
+    <title>Lead</title>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <div class="sp-outer">
       <div class="sp-card">
         <div class="sp-card-header">
-          <h1>Here is Your Lead</h1>
+          <h1>Lead Details</h1>
           <div class="logo">
             <a href="#" target="_blank" rel="noopener noreferrer">
               <img
-                src="https://nds.studio/wp-content/uploads/2023/02/nds-1-1.png"
-                alt=""
+                src="/assets/company-logo.webp"
+                alt="Company Logo"
+                class="logo"
               />
             </a>
           </div>
         </div>
-        <div class="sp-table">
+        <div class="sp-table" id="detailsTableId">
           <ul>
             <li>
               <p>Name:</p>

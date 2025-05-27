@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #222222;
+  font-size: 14px;
+}
+
+.sp-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 10px;
+  background-color: #f6f6f6;
+}
+
+.sp-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.sp-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  width: 100%;
+  max-width: 100px;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+.sp-table ul {
+  list-style: none;
+  padding: 10px 20px;
+}
+
+.sp-table li {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 10px;
+  margin-top: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.sp-table li:last-child {
+  border-bottom: 1px solid transparent;
+}
+
+.sp-table p {
+  font-weight: 600;
+}
+
+.sp-footer p {
+  font-size: 10px;
+  color: #c0c0c0;
+  text-align: center;
+  padding: 10px;
+  font-weight: 400;
+  border-top: 1px solid #ddd;
+}
