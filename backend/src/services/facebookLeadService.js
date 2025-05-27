@@ -9,8 +9,8 @@ const {
 } = require("../model/fbModel");
 require("dotenv").config();
 const axios = require("axios");
-async function getFbUser(userAccessToken, userName) {
-  const saveUsers = saveUser(userAccessToken, userName);
+async function getFbUser(userAccessToken, userName, userId) {
+  const saveUsers = saveUser(userAccessToken, userName, userId);
   return saveUsers;
 }
 async function getFbPages(pages, savedUser) {
@@ -50,13 +50,14 @@ async function getAllFbPages(userAccessToken) {
 async function subscribeToAllPages(pages) {
   const subscriptionResults = await Promise.all(
     pages.map(async (page) => {
+      const accessToken = await getPageAccessToken(page.id);
       try {
         await axios.post(
           `https://graph.facebook.com/v22.0/${page.id}/subscribed_apps`,
           null,
           {
             params: {
-              access_token: page.access_token,
+              access_token: accessToken.page_access_token,
               subscribed_fields: "leadgen",
             },
           }

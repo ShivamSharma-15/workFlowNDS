@@ -1,37 +1,64 @@
 const pool = require("../config/db");
 
-async function saveUser(userAccessToken, userName) {
+async function saveUser(userAccessToken, userName, userId) {
+  const conn = await pool.getConnection();
   try {
-    const [rows] = await pool.query(
-      "INSERT INTO facebook_users (display_name, access_token) VALUES (?,?)",
-      [userName, userAccessToken]
+    await conn.beginTransaction();
+
+    const [check] = await conn.query(
+      "SELECT id FROM facebook_users WHERE user_id = ?",
+      [userId]
     );
-    if (rows.affectedRows !== 1) return null;
-    else return rows.insertId;
+
+    if (check.length !== 0) {
+      await conn.query(
+        "UPDATE facebook_users SET display_name = ?, access_token = ? WHERE user_id = ?",
+        [userName, userAccessToken, userId]
+      );
+      await conn.commit();
+      return check[0].id;
+    } else {
+      const [rows] = await conn.query(
+        "INSERT INTO facebook_users (display_name, access_token, user_id) VALUES (?, ?, ?)",
+        [userName, userAccessToken, userId]
+      );
+      await conn.commit();
+      return rows.insertId;
+    }
   } catch (err) {
-    console.log("Could not add");
+    await conn.rollback();
+    console.error("Transaction failed:", err);
+    return null;
+  } finally {
+    conn.release();
   }
 }
+
 async function savePage(pages, userId) {
   const insertQuery = `
     INSERT INTO facebook_pages (user_id, page_id, page_name, page_access_token)
     VALUES (?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
-      page_name = VALUES(page_name),
-      page_access_token = VALUES(page_access_token)
+      page_id = page_id
   `;
 
-  const promises = pages.map((page) =>
-    pool.query(insertQuery, [
-      userId,
-      page.id,
-      page.name || null,
-      page.access_token,
-    ])
-  );
+  try {
+    const insertPromises = pages.map((page) =>
+      pool.query(insertQuery, [
+        userId,
+        page.id,
+        page.name || null,
+        page.access_token,
+      ])
+    );
 
-  await Promise.all(promises);
+    await Promise.allSettled(insertPromises);
+  } catch (err) {
+    console.error("Error saving pages:", err);
+    throw err;
+  }
 }
+
 async function subscribe(successfulSubs) {
   if (!successfulSubs || successfulSubs.length === 0) return;
 
