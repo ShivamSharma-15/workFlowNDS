@@ -119,6 +119,7 @@ async function leadAdded(lead) {
 async function sendWhatsappUpdate(lead) {
   const pageAccessTokenRow = await getPageAccessToken(page_id);
   const pageAccessToken = pageAccessTokenRow.page_access_token;
+  console.log(pageAccessTokenRow);
   const form_id = lead?.form_id;
   try {
     const response = await axios.get(
@@ -132,10 +133,7 @@ async function sendWhatsappUpdate(lead) {
     const formName = response.name;
     console.log(formName);
   } catch (error) {
-    console.error(
-      "Error Sending message",
-      error.response?.data || error.message || error
-    );
+    console.log("Error Sending message", error);
     return null;
   }
 }
