@@ -17,7 +17,7 @@ async function getValidationForLeadEntry(clientId, secretcode) {
     }
 
     const internalPageId = pages[0].id;
-    console.log(internalPageId);
+
     // Step 2: Find the lead based on page_id and secret_code
     const [leads] = await connection.execute(
       `SELECT lead_data FROM fb_leads WHERE page_id = ? AND secret_code = ?`,
