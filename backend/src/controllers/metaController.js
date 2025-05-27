@@ -7,6 +7,7 @@ const {
   getAllFbPages,
   subscribeToAllPages,
   leadAdded,
+  sendWhatsappUpdate,
 } = require("../services/facebookLeadService");
 const metaWebhookHandshake = async (req, res) => {
   const key = process.env.META_VERIFY_TOKEN;
@@ -30,6 +31,7 @@ const metaWebhookPing = async (req, res) => {
         const leadAdd = await leadAdded(lead);
         if (leadAdd) {
           console.log("Lead added successfully");
+          const sendWaMessage = await sendWhatsappUpdate(lead);
         }
       } catch (e) {
         console.error("Error processing lead:", e.message);

@@ -116,10 +116,34 @@ async function leadAdded(lead) {
     return null;
   }
 }
+export async function sendWhatsappUpdate(lead) {
+  const pageAccessTokenRow = await getPageAccessToken(page_id);
+  const pageAccessToken = pageAccessTokenRow.page_access_token;
+  const form_id = lead?.form_id;
+  try {
+    const response = await axios.get(
+      `https://graph.facebook.com/v22.0/${form_id}`,
+      {
+        params: {
+          access_token: pageAccessToken,
+        },
+      }
+    );
+    const formName = response.name;
+    console.log(formName);
+  } catch (error) {
+    console.error(
+      "Error Sending message",
+      error.response?.data || error.message || error
+    );
+    return null;
+  }
+}
 function formatToMySQLDateTime(input) {
   const date = new Date(typeof input === "number" ? input * 1000 : input);
   return date.toISOString().slice(0, 19).replace("T", " ");
 }
+
 module.exports = {
   getFbUser,
   getFbPages,
@@ -127,4 +151,5 @@ module.exports = {
   getAllFbPages,
   subscribeToAllPages,
   leadAdded,
+  sendWhatsappUpdate,
 };

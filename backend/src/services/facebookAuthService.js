@@ -1,5 +1,4 @@
-require("dotenv").config();
-
+const axios = require("axios");
 const FacebookStrategy = require("passport-facebook").Strategy;
 
 function getFacebookStrategy(passport, callbackURL) {
@@ -18,9 +17,30 @@ function getFacebookStrategy(passport, callbackURL) {
           "leads_retrieval",
         ],
       },
-      function (accessToken, refreshToken, profile, done) {
-        profile.accessToken = accessToken;
-        return done(null, profile);
+      async function (accessToken, refreshToken, profile, done) {
+        try {
+          // Exchange short-lived user token for a long-lived one
+          const { data } = await axios.get(
+            `https://graph.facebook.com/v18.0/oauth/access_token`,
+            {
+              params: {
+                grant_type: "fb_exchange_token",
+                client_id: process.env.FB_APP_ID,
+                client_secret: process.env.FB_APP_SECRET,
+                fb_exchange_token: accessToken,
+              },
+            }
+          );
+
+          profile.accessToken = data.access_token;
+          return done(null, profile);
+        } catch (err) {
+          console.error(
+            "Error exchanging short-lived token:",
+            err.response?.data || err.message
+          );
+          return done(err);
+        }
       }
     )
   );
