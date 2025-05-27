@@ -25,7 +25,7 @@ const metaWebhookPing = async (req, res) => {
   if (body.object === "page") {
     for (const entry of body.entry) {
       const lead = entry.changes?.[0]?.value;
-      const leadAdd = leadAdd(lead);
+      const leadAdd = leadAdded(lead);
       if (leadAdded) {
         console.log(true);
       }
