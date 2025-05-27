@@ -71,7 +71,7 @@ async function leadAddDb(leadData, lead, idPage) {
     if (rows.affectedRows !== 1) return null;
     else return true;
   } catch (err) {
-    console.log("cannot insert the lead");
+    console.log("cannot insert the lead", err);
   }
 }
 module.exports = {
