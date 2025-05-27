@@ -134,8 +134,8 @@ async function sendWhatsappUpdate(lead, leadAdd) {
     console.log(response);
     formData = response.data;
     formName = formData.name;
-    formatData = formattingLead(leadData);
-    formatContact = extractContactInfo(leadData);
+    formatData = formattingLead(leadAdd);
+    formatContact = extractContactInfo(leadAdd);
     const messageSent = await whatsappMessageSender(
       formName,
       formatData,
@@ -153,7 +153,7 @@ function formatToMySQLDateTime(input) {
   const date = new Date(typeof input === "number" ? input * 1000 : input);
   return date.toISOString().slice(0, 19).replace("T", " ");
 }
-function formattingLead(leadData) {
+function formattingLead(leadAdd) {
   if (!leadData || !Array.isArray(leadData.field_data)) {
     return [];
   }
@@ -178,7 +178,7 @@ function formattingLead(leadData) {
 
   return formattedFields;
 }
-function extractContactInfo(leadData) {
+function extractContactInfo(leadAdd) {
   if (!leadData || !Array.isArray(leadData.field_data)) {
     return {};
   }
