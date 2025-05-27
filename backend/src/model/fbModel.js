@@ -57,7 +57,7 @@ async function getPageAccessToken(page_id) {
       [page_id]
     );
     if (rows.length !== 1) return null;
-    else return rows[0];
+    else return rows[0].page_access_token;
   } catch (err) {
     console.log("Could not find");
   }
