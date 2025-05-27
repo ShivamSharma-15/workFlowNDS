@@ -66,7 +66,13 @@ async function leadAddDb(leadData, lead, idPage) {
   try {
     const [rows] = await pool.query(
       "INSERT INTO fb_leads (lead_id, lead_data, page_id, form_id, created_at) VALUES (?,?,?,?,?)",
-      [lead?.leadgen_id, leadData, idPage, lead?.form_id, lead?.created_time]
+      [
+        lead?.leadgen_id,
+        JSON.stringify(leadData),
+        idPage,
+        lead?.form_id,
+        lead?.created_time,
+      ]
     );
     if (rows.affectedRows !== 1) return null;
     else return true;

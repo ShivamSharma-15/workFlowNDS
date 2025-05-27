@@ -22,7 +22,8 @@ CREATE TABLE `sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 CREATE TABLE fb_leads (
-    lead_id VARCHAR(50) PRIMARY KEY,
+    id int AUTO_INCREMENT PRIMARY KEY,
+    lead_id VARCHAR(50),
     lead_data JSON,
     page_id int,
     form_id VARCHAR(255),
