@@ -80,13 +80,14 @@ async function leadAdded(lead) {
   try {
     const leadgen_id = lead?.leadgen_id;
     const page_id = lead?.page_id;
-    console.log(page_id);
     if (!leadgen_id || !page_id) {
       console.warn("Missing leadgen_id or page_id");
       return null;
     }
 
-    const pageAccessToken = await getPageAccessToken(page_id);
+    const pageAccessTokenRow = await getPageAccessToken(page_id);
+    const pageAccessToken = pageAccessTokenRow.page_access_token;
+    const idPage = pageAccessTokenRow.id;
 
     const response = await axios.get(
       `https://graph.facebook.com/v22.0/${leadgen_id}`,
@@ -104,7 +105,7 @@ async function leadAdded(lead) {
       return null;
     }
 
-    const leadDataToDB = await leadAddDb(leadData, lead);
+    const leadDataToDB = await leadAddDb(leadData, lead, idPage);
     return leadDataToDB ? true : null;
   } catch (error) {
     console.error(

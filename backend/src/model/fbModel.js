@@ -50,36 +50,28 @@ async function subscribe(successfulSubs) {
   await Promise.all(promises);
 }
 async function getPageAccessToken(page_id) {
-  console.log(page_id);
   const page_id_str = String(page_id).trim();
   try {
     const [rows] = await pool.query(
-      "SELECT page_access_token FROM facebook_pages WHERE page_id = ?",
+      "SELECT id, page_access_token FROM facebook_pages WHERE page_id = ?",
       [page_id_str]
     );
-    console.log("DB rows:", rows);
     if (rows.length !== 1) return null;
-    else return rows[0].page_access_token;
+    else return rows[0];
   } catch (err) {
     console.log("Could not find", err);
   }
 }
-async function leadAddDb(leadData, lead) {
+async function leadAddDb(leadData, lead, idPage) {
   try {
     const [rows] = await pool.query(
       "INSERT INTO fb_leads (lead_id, lead_data, page_id, form_id, created_at) VALUES (?,?,?,?,?)",
-      [
-        lead?.leadgen_id,
-        leadData,
-        lead?.page_id,
-        lead?.form_id,
-        lead?.created_time,
-      ]
+      [lead?.leadgen_id, leadData, idPage, lead?.form_id, lead?.created_time]
     );
     if (rows.affectedRows !== 1) return null;
     else return true;
   } catch (err) {
-    console.log("Could not find this");
+    console.log("cannot insert the lead");
   }
 }
 module.exports = {
