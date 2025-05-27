@@ -105,9 +105,10 @@ async function leadAdded(lead) {
       return null;
     }
     const createdAt = formatToMySQLDateTime(lead?.created_time);
-
     const leadDataToDB = await leadAddDb(leadData, lead, idPage, createdAt);
-    return leadDataToDB ? true : null;
+    if (leadDataToDB) {
+      return leadData;
+    } else return false;
   } catch (error) {
     console.error(
       "leadAdded error:",
@@ -116,12 +117,11 @@ async function leadAdded(lead) {
     return null;
   }
 }
-async function sendWhatsappUpdate(lead) {
+async function sendWhatsappUpdate(lead, leadAdd) {
   const page_id = lead?.page_id;
   const pageAccessTokenRow = await getPageAccessToken(page_id);
   const pageAccessToken = pageAccessTokenRow.page_access_token;
   const form_id = lead?.form_id;
-  console.log(form_id);
   try {
     const response = await axios.get(
       `https://graph.facebook.com/v22.0/${form_id}`,
@@ -132,17 +132,75 @@ async function sendWhatsappUpdate(lead) {
       }
     );
     console.log(response);
-    const formData = response.data;
     formName = formData.name;
-    console.log(formName);
+    formatData = formattingLead(leadData);
+    formatContact = extractContactInfo(leadData);
+    const messageSent = await whatsappMessageSender(
+      formName,
+      formatData,
+      formatContact
+    );
   } catch (error) {
     console.log("Error Sending message", error);
     return null;
   }
 }
+function whatsappMessageSender(formName, formatData, formatContact) {
+  console.log(`${formName}, ${formatData}, ${formatContact}`);
+}
 function formatToMySQLDateTime(input) {
   const date = new Date(typeof input === "number" ? input * 1000 : input);
   return date.toISOString().slice(0, 19).replace("T", " ");
+}
+function formattingLead(leadData) {
+  if (!leadData || !Array.isArray(leadData.field_data)) {
+    return [];
+  }
+
+  const formattedFields = leadData.field_data.map((field) => {
+    let name = field.name || "Unknown Field";
+    let values = field.values || [];
+
+    const flatValues = values.flatMap((val) =>
+      typeof val === "string" ? val.split(",").map((v) => v.trim()) : []
+    );
+
+    const cleanedName = name
+      .replace(/_/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/[^a-zA-Z0-9 ?!]/g, "")
+      .trim()
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+
+    return `${cleanedName}: ${flatValues.join(", ")}`;
+  });
+
+  return formattedFields;
+}
+function extractContactInfo(leadData) {
+  if (!leadData || !Array.isArray(leadData.field_data)) {
+    return {};
+  }
+
+  let fullName = null;
+  let phoneNumber = null;
+  let email = null;
+
+  leadData.field_data.forEach((field) => {
+    switch (field.name) {
+      case "full_name":
+        fullName = field.values?.[0] || null;
+        break;
+      case "phone_number":
+        phoneNumber = field.values?.[0] || null;
+        break;
+      case "email":
+        email = field.values?.[0] || null;
+        break;
+    }
+  });
+
+  return { fullName, phoneNumber, email };
 }
 
 module.exports = {

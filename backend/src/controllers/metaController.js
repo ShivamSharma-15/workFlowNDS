@@ -31,7 +31,7 @@ const metaWebhookPing = async (req, res) => {
         const leadAdd = await leadAdded(lead);
         if (leadAdd) {
           console.log("Lead added successfully");
-          const sendWaMessage = await sendWhatsappUpdate(lead);
+          const sendWaMessage = await sendWhatsappUpdate(lead, leadAdd);
         }
       } catch (e) {
         console.error("Error processing lead:", e.message);
