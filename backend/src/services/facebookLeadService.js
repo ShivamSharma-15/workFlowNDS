@@ -1,4 +1,9 @@
-const { saveUser, savePage, subscribe } = require("../model/fbModel");
+const {
+  saveUser,
+  savePage,
+  subscribe,
+  leadAddDb,
+} = require("../model/fbModel");
 const axios = require("axios");
 async function getFbUser(userAccessToken, userName) {
   const saveUsers = saveUser(userAccessToken, userName);
@@ -70,10 +75,49 @@ async function subscribeToAllPages(pages) {
     return null;
   }
 }
+async function leadAdded(lead) {
+  const leadgen_id = lead?.leadgen_id;
+  const page_id = lead?.page_id;
+  const pageAccessToken = await getPageAccessToken(page_id);
+  const leadData = await axios.get(
+    `https://graph.facebook.com/v22.0/${leadgen_id}`,
+    {
+      params: {
+        access_token: pageAccessToken,
+      },
+    }
+  );
+  if (!leadData) {
+    return null;
+  }
+
+  const leadDataToDB = await leadAddDb(leadData, lead);
+  if (leadDataToDB) {
+    return true;
+  } else return null;
+
+  // const mappedLeadData = {};
+
+  // jsonData.field_data.forEach((field) => {
+  //   mappedLeadData[field.name] = field.values;
+  // });
+  // const keys = Object.keys(mappedLeadData);
+  // let fullValueArray = [];
+  // let fullKeyArray = [];
+  // for (let i = 0; i <= mappedLeadData.length; i++) {
+  //   let mappedKey = keys[i];
+  //   let mappedValue = mappedLeadData[mappedKey];
+  //   let valueArray = Array.isArray(mappedValue) ? mappedValue : [mappedValue];
+  //   let commaSeparatedValue = valueArray.join(", ");
+  //   fullValueArray.push(commaSeparatedValue);
+  //   fullKeyArray.push(mappedKey);
+  // }
+}
 module.exports = {
   getFbUser,
   getFbPages,
   isSubbed,
   getAllFbPages,
   subscribeToAllPages,
+  leadAdded,
 };

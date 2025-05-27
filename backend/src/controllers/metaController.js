@@ -6,6 +6,7 @@ const {
   isSubbed,
   getAllFbPages,
   subscribeToAllPages,
+  leadAdded,
 } = require("../services/facebookLeadService");
 const metaWebhookHandshake = async (req, res) => {
   const key = process.env.META_VERIFY_TOKEN;
@@ -24,11 +25,9 @@ const metaWebhookPing = async (req, res) => {
   if (body.object === "page") {
     for (const entry of body.entry) {
       const lead = entry.changes?.[0]?.value;
-      console.log(lead);
-      const leadgen_id = lead?.leadgen_id;
-
-      if (leadgen_id) {
-        console.log("New Lead ID:", leadgen_id);
+      const leadAdded = leadAdd(lead);
+      if (leadAdded) {
+        console.log(true);
       }
     }
     res.sendStatus(200);

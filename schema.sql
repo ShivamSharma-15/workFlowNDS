@@ -20,3 +20,12 @@ CREATE TABLE `sessions` (
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE fb_leads (
+    lead_id VARCHAR(50) PRIMARY KEY,
+    lead_data JSON,
+    page_id int,
+    form_id VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (page_id) REFERENCES facebook_pages(id) ON DELETE CASCADE
+);

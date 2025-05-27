@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const { leadAdded } = require("../services/facebookLeadService");
 
 async function saveUser(userAccessToken, userName) {
   try {
@@ -49,4 +50,40 @@ async function subscribe(successfulSubs) {
 
   await Promise.all(promises);
 }
-module.exports = { saveUser, savePage, subscribe };
+async function getPageAccessToken(page_id) {
+  try {
+    const [rows] = await pool.query(
+      "SELECT page_access_token FROM facebook_pages WHERE page_id = ?",
+      [page_id]
+    );
+    if (rows.length !== 1) return null;
+    else return rows[0];
+  } catch (err) {
+    console.log("Could not find");
+  }
+}
+async function leadAddDb(leadData, lead) {
+  try {
+    const [rows] = await pool.query(
+      "INSERT INTO fb_leads (lead_id, lead_data, page_id, form_id, created_at) VALUES (?,?,?,?,?)",
+      [
+        lead?.leadgen_id,
+        leadData,
+        lead?.page_id,
+        lead?.form_id,
+        lead?.created_time,
+      ]
+    );
+    if (rows.affectedRows !== 1) return null;
+    else return true;
+  } catch (err) {
+    console.log("Could not find");
+  }
+}
+module.exports = {
+  saveUser,
+  savePage,
+  subscribe,
+  getPageAccessToken,
+  leadAddDb,
+};
