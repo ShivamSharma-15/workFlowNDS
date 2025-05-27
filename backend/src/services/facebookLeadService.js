@@ -120,8 +120,8 @@ async function sendWhatsappUpdate(lead) {
   const page_id = lead?.page_id;
   const pageAccessTokenRow = await getPageAccessToken(page_id);
   const pageAccessToken = pageAccessTokenRow.page_access_token;
-  console.log(pageAccessTokenRow);
   const form_id = lead?.form_id;
+  console.log(form_id);
   try {
     const response = await axios.get(
       `https://graph.facebook.com/v22.0/${form_id}`,
@@ -131,6 +131,7 @@ async function sendWhatsappUpdate(lead) {
         },
       }
     );
+    console.log(response);
     const formName = response.name;
     console.log(formName);
   } catch (error) {
