@@ -146,8 +146,43 @@ async function sendWhatsappUpdate(lead, leadAdd) {
     return null;
   }
 }
-function whatsappMessageSender(formName, formatData, formatContact) {
+async function whatsappMessageSender(formName, formatData, formatContact) {
   console.log(`${formName}, ${formatData}, ${formatContact}`);
+  const leadDetails = formatData.join("\n");
+  const data = {
+    messaging_product: "whatsapp",
+    to: "917697876527",
+    type: "template",
+    template: {
+      name: "instant_form_received",
+      language: { code: "en_US" },
+      components: [
+        {
+          type: "body",
+          parameters: [
+            { type: "text", text: formName },
+            { type: "text", text: formatContact.fullName },
+            { type: "text", text: formatContact.phoneNumber },
+            { type: "text", text: leadDetails },
+          ],
+        },
+      ],
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      "https://graph.facebook.com/v22.0/539610682577776/messages",
+      data
+    );
+
+    console.log("Message sent:", response.data);
+  } catch (error) {
+    console.error(
+      "Error sending message:",
+      error.response?.data || error.message
+    );
+  }
 }
 function formatToMySQLDateTime(input) {
   const date = new Date(typeof input === "number" ? input * 1000 : input);
