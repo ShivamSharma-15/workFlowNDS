@@ -3,6 +3,7 @@ const { checkMetaLeadsValidity } = require("../services/leadShowService");
 const showMetaLeadsData = async (req, res) => {
   const { clientId } = req.params;
   const { secretcode } = req.query;
+  console.log(secretcode);
 
   const isValid = await checkMetaLeadsValidity(clientId, secretcode);
   if (isValid) {
