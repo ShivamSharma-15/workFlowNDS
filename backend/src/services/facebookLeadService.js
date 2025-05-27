@@ -117,6 +117,7 @@ async function leadAdded(lead) {
   }
 }
 async function sendWhatsappUpdate(lead) {
+  const page_id = lead?.page_id;
   const pageAccessTokenRow = await getPageAccessToken(page_id);
   const pageAccessToken = pageAccessTokenRow.page_access_token;
   console.log(pageAccessTokenRow);
