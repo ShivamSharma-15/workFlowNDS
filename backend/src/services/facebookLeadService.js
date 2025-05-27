@@ -132,7 +132,8 @@ async function sendWhatsappUpdate(lead) {
       }
     );
     console.log(response);
-    const formName = response.name;
+    const formData = response.data;
+    formName = formData.name;
     console.log(formName);
   } catch (error) {
     console.log("Error Sending message", error);
