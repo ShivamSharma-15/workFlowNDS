@@ -77,7 +77,7 @@ async function getLeadData() {
     return;
   }
 
-  const endpoint = `apps/leadsmart/leads-view/${clientId}/lead?secretcode=${encodeURIComponent(
+  const endpoint = `/apps/leadsmart/leads-view/${clientId}/lead?secretcode=${encodeURIComponent(
     secretCode
   )}`;
 
