@@ -76,6 +76,7 @@ async function getLeadData() {
     console.error("Missing clientId or secretcode in URL.");
     return;
   }
+  console.log(urlParams + ", " + secretCode);
 
   const endpoint = `/${clientId}/lead?secretcode=${encodeURIComponent(
     secretCode
