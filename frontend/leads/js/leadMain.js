@@ -12,13 +12,11 @@ async function getLeadData() {
 
   // Helper: Convert ISO time to human-readable IST format
   function toIST(isoString) {
-    const date = new Date(isoString);
-    const istOffset = 5.5 * 60; // IST is UTC + 5:30
-    const localDate = new Date(date.getTime() + istOffset * 60000);
-    return localDate.toLocaleString("en-IN", {
+    const date = new Date(isoString); // date correctly holds the UTC timestamp from the ISO string
+    return date.toLocaleString("en-IN", {
       dateStyle: "full",
       timeStyle: "short",
-      timeZone: "Asia/Kolkata",
+      timeZone: "Asia/Kolkata", // This is the key! It tells JavaScript to format the date for IST.
     });
   }
 
