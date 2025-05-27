@@ -132,6 +132,7 @@ async function sendWhatsappUpdate(lead, leadAdd) {
       }
     );
     console.log(response);
+    formData = response.data;
     formName = formData.name;
     formatData = formattingLead(leadData);
     formatContact = extractContactInfo(leadData);
