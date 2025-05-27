@@ -1,9 +1,11 @@
+const crypto = require("crypto");
 const {
   saveUser,
   savePage,
   subscribe,
   leadAddDb,
   getPageAccessToken,
+  getSecretCode,
 } = require("../model/fbModel");
 require("dotenv").config();
 const axios = require("axios");
@@ -106,7 +108,14 @@ async function leadAdded(lead) {
       return null;
     }
     const createdAt = formatToMySQLDateTime(lead?.created_time);
-    const leadDataToDB = await leadAddDb(leadData, lead, idPage, createdAt);
+    const string = generateUrlSafeString(64);
+    const leadDataToDB = await leadAddDb(
+      leadData,
+      lead,
+      idPage,
+      createdAt,
+      string
+    );
     if (leadDataToDB) {
       return leadData;
     } else return false;
@@ -121,6 +130,8 @@ async function leadAdded(lead) {
 async function sendWhatsappUpdate(lead, leadAdd) {
   const page_id = lead?.page_id;
   const pageAccessTokenRow = await getPageAccessToken(page_id);
+  const secretCode = await getSecretCode(page_id);
+  const linkString = `${page_id}?secretcode=${secretCode}`;
   const pageAccessToken = pageAccessTokenRow.page_access_token;
   const form_id = lead?.form_id;
   try {
@@ -139,17 +150,19 @@ async function sendWhatsappUpdate(lead, leadAdd) {
     formatContact = extractContactInfo(leadAdd);
     const messageSent = await whatsappMessageSender(
       formName,
-      formatData,
-      formatContact
+      formatContact,
+      linkString
     );
+    if (!messageSent) {
+      return null;
+    } else return true;
   } catch (error) {
     console.log("Error Sending message", error);
     return null;
   }
 }
-async function whatsappMessageSender(formName, formatData, formatContact) {
+async function whatsappMessageSender(formName, formatContact, linkString) {
   const accessToken = process.env.WA_TOKEN;
-  const leadDetails = formatData.join(" || ");
   const data = {
     messaging_product: "whatsapp",
     to: "917697876527",
@@ -159,9 +172,14 @@ async function whatsappMessageSender(formName, formatData, formatContact) {
       language: { code: "en" },
       components: [
         {
-          type: "body",
+          type: "header",
           parameters: [
             { type: "text", parameter_name: "form_name", text: formName },
+          ],
+        },
+        {
+          type: "body",
+          parameters: [
             {
               type: "text",
               parameter_name: "name",
@@ -172,8 +190,18 @@ async function whatsappMessageSender(formName, formatData, formatContact) {
               parameter_name: "number",
               text: formatContact.phoneNumber,
             },
-            { type: "text", parameter_name: "details", text: leadDetails },
+            {
+              type: "text",
+              parameter_name: "email",
+              text: formatContact.email,
+            },
           ],
+        },
+        {
+          type: "button",
+          sub_type: "url",
+          index: 0,
+          parameters: [{ type: "text", text: `/leads-view/${linkString}` }],
         },
       ],
     },
@@ -234,24 +262,56 @@ function extractContactInfo(leadData) {
   }
 
   let fullName = null;
+  let firstName = null;
+  let lastName = null;
   let phoneNumber = null;
   let email = null;
 
   leadData.field_data.forEach((field) => {
+    const value = field.values?.[0] || null;
+
     switch (field.name) {
       case "full_name":
-        fullName = field.values?.[0] || null;
+        fullName = value;
+        break;
+      case "first_name":
+        firstName = value;
+        break;
+      case "last_name":
+        lastName = value;
         break;
       case "phone_number":
-        phoneNumber = field.values?.[0] || null;
+        phoneNumber = value;
         break;
       case "email":
-        email = field.values?.[0] || null;
+        email = value;
         break;
     }
   });
 
+  if (!fullName) {
+    if (firstName && lastName) {
+      fullName = `${firstName} ${lastName}`;
+    } else if (firstName) {
+      fullName = firstName;
+    } else if (lastName) {
+      fullName = lastName;
+    }
+  }
+
   return { fullName, phoneNumber, email };
+}
+function generateUrlSafeString(length = 64) {
+  const byteLength = Math.ceil((length * 3) / 4);
+
+  return crypto
+    .randomBytes(byteLength)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "")
+    .substring(0, length);
+  h;
 }
 
 module.exports = {

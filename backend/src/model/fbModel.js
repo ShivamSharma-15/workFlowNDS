@@ -62,16 +62,30 @@ async function getPageAccessToken(page_id) {
     console.log("Could not find", err);
   }
 }
-async function leadAddDb(leadData, lead, idPage, createdAt) {
+async function getSecretCode(page_id) {
+  const page_id_str = String(page_id).trim();
   try {
     const [rows] = await pool.query(
-      "INSERT INTO fb_leads (lead_id, lead_data, page_id, form_id, created_at) VALUES (?,?,?,?,?)",
+      "SELECT secret_code FROM facebook_pages WHERE page_id = ?",
+      [page_id_str]
+    );
+    if (rows.length !== 1) return null;
+    else return rows[0].secret_code;
+  } catch (err) {
+    console.log("Could not find", err);
+  }
+}
+async function leadAddDb(leadData, lead, idPage, createdAt, string) {
+  try {
+    const [rows] = await pool.query(
+      "INSERT INTO fb_leads (lead_id, lead_data, page_id, form_id, created_at, secret_code) VALUES (?,?,?,?,?,?)",
       [
         lead?.leadgen_id,
         JSON.stringify(leadData),
         idPage,
         lead?.form_id,
         createdAt,
+        string,
       ]
     );
     if (rows.affectedRows !== 1) return null;
@@ -86,4 +100,5 @@ module.exports = {
   subscribe,
   getPageAccessToken,
   leadAddDb,
+  getSecretCode,
 };
