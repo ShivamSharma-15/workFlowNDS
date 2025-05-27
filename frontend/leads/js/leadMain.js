@@ -68,7 +68,7 @@ async function getLeadData() {
 
   // Extract clientId and secretcode from URL
   const pathParts = window.location.pathname.split("/");
-  const clientId = pathParts[2];
+  const clientId = pathParts[4];
   const urlParams = new URLSearchParams(window.location.search);
   const secretCode = urlParams.get("secretcode");
 
@@ -76,7 +76,6 @@ async function getLeadData() {
     console.error("Missing clientId or secretcode in URL.");
     return;
   }
-  console.log(urlParams + ", " + secretCode);
 
   const endpoint = `/${clientId}/lead?secretcode=${encodeURIComponent(
     secretCode
