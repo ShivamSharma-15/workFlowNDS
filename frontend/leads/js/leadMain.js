@@ -96,4 +96,8 @@ async function getLeadData() {
     console.error("Failed to fetch data:", err);
   }
 }
-await getLeadData();
+document.addEventListener("DOMContentLoaded", () => {
+  (async () => {
+    await getLeadData();
+  })();
+});
