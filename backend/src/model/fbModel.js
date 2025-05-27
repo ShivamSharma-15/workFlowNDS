@@ -62,7 +62,7 @@ async function getPageAccessToken(page_id) {
     console.log("Could not find", err);
   }
 }
-async function leadAddDb(leadData, lead, idPage) {
+async function leadAddDb(leadData, lead, idPage, createdAt) {
   try {
     const [rows] = await pool.query(
       "INSERT INTO fb_leads (lead_id, lead_data, page_id, form_id, created_at) VALUES (?,?,?,?,?)",
@@ -71,7 +71,7 @@ async function leadAddDb(leadData, lead, idPage) {
         JSON.stringify(leadData),
         idPage,
         lead?.form_id,
-        lead?.created_time,
+        createdAt,
       ]
     );
     if (rows.affectedRows !== 1) return null;

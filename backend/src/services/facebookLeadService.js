@@ -104,8 +104,9 @@ async function leadAdded(lead) {
       console.warn("Lead data from Graph API is missing expected fields");
       return null;
     }
+    const createdAt = formatToMySQLDateTime(lead?.created_time);
 
-    const leadDataToDB = await leadAddDb(leadData, lead, idPage);
+    const leadDataToDB = await leadAddDb(leadData, lead, idPage, createdAt);
     return leadDataToDB ? true : null;
   } catch (error) {
     console.error(
@@ -115,7 +116,10 @@ async function leadAdded(lead) {
     return null;
   }
 }
-
+function formatToMySQLDateTime(input) {
+  const date = new Date(typeof input === "number" ? input * 1000 : input);
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
 module.exports = {
   getFbUser,
   getFbPages,
