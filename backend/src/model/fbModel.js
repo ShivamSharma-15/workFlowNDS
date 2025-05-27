@@ -70,7 +70,7 @@ async function getSecretCode(page_id) {
       [page_id_str]
     );
     if (rows.length !== 1) return null;
-    else return rows[0].secret_code;
+    else return rows[0];
   } catch (err) {
     console.log("Could not find", err);
   }

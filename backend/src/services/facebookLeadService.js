@@ -130,7 +130,9 @@ async function leadAdded(lead) {
 async function sendWhatsappUpdate(lead, leadAdd) {
   const page_id = lead?.page_id;
   const pageAccessTokenRow = await getPageAccessToken(page_id);
-  const secretCode = await getSecretCode(page_id);
+  const secretCodeRow = await getSecretCode(page_id);
+  const secretCode = secretCodeRow.secret_code;
+  console.log(secretCode + " || " + secretCodeRow);
   const linkString = `${page_id}?secretcode=${secretCode}`;
   const pageAccessToken = pageAccessTokenRow.page_access_token;
   const form_id = lead?.form_id;
