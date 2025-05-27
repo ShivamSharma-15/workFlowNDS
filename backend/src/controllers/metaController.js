@@ -25,9 +25,14 @@ const metaWebhookPing = async (req, res) => {
   if (body.object === "page") {
     for (const entry of body.entry) {
       const lead = entry.changes?.[0]?.value;
-      const leadAdd = leadAdded(lead);
-      if (leadAdded) {
-        console.log(true);
+
+      try {
+        const leadAdd = await leadAdded(lead);
+        if (leadAdd) {
+          console.log("Lead added successfully");
+        }
+      } catch (e) {
+        console.error("Error processing lead:", e.message);
       }
     }
     res.sendStatus(200);
@@ -35,6 +40,7 @@ const metaWebhookPing = async (req, res) => {
     res.sendStatus(404);
   }
 };
+
 const loginSuccess = async function (req, res) {
   if (!req.user || !req.user.accessToken) {
     return res.status(401).send("User is not authenticated.");

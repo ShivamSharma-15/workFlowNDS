@@ -77,43 +77,44 @@ async function subscribeToAllPages(pages) {
   }
 }
 async function leadAdded(lead) {
-  const leadgen_id = lead?.leadgen_id;
-  const page_id = lead?.page_id;
-  const pageAccessToken = await getPageAccessToken(page_id);
-  const leadData = await axios.get(
-    `https://graph.facebook.com/v22.0/${leadgen_id}`,
-    {
-      params: {
-        access_token: pageAccessToken,
-      },
+  try {
+    const leadgen_id = lead?.leadgen_id;
+    const page_id = lead?.page_id;
+
+    if (!leadgen_id || !page_id) {
+      console.warn("Missing leadgen_id or page_id");
+      return null;
     }
-  );
-  if (!leadData) {
+
+    const pageAccessToken = await getPageAccessToken(page_id);
+
+    const response = await axios.get(
+      `https://graph.facebook.com/v22.0/${leadgen_id}`,
+      {
+        params: {
+          access_token: pageAccessToken,
+        },
+      }
+    );
+
+    const leadData = response.data;
+
+    if (!leadData || !leadData.id) {
+      console.warn("Lead data from Graph API is missing expected fields");
+      return null;
+    }
+
+    const leadDataToDB = await leadAddDb(leadData, lead);
+    return leadDataToDB ? true : null;
+  } catch (error) {
+    console.error(
+      "leadAdded error:",
+      error.response?.data || error.message || error
+    );
     return null;
   }
-
-  const leadDataToDB = await leadAddDb(leadData, lead);
-  if (leadDataToDB) {
-    return true;
-  } else return null;
-
-  // const mappedLeadData = {};
-
-  // jsonData.field_data.forEach((field) => {
-  //   mappedLeadData[field.name] = field.values;
-  // });
-  // const keys = Object.keys(mappedLeadData);
-  // let fullValueArray = [];
-  // let fullKeyArray = [];
-  // for (let i = 0; i <= mappedLeadData.length; i++) {
-  //   let mappedKey = keys[i];
-  //   let mappedValue = mappedLeadData[mappedKey];
-  //   let valueArray = Array.isArray(mappedValue) ? mappedValue : [mappedValue];
-  //   let commaSeparatedValue = valueArray.join(", ");
-  //   fullValueArray.push(commaSeparatedValue);
-  //   fullKeyArray.push(mappedKey);
-  // }
 }
+
 module.exports = {
   getFbUser,
   getFbPages,
