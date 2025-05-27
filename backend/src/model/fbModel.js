@@ -52,7 +52,7 @@ async function subscribe(successfulSubs) {
 async function getPageAccessToken(page_id) {
   console.log(page_id);
   const pageIdString = page_id.toString();
-  console.log;
+  console.log(pageIdString);
   try {
     const [rows] = await pool.query(
       "SELECT page_access_token FROM facebook_pages WHERE page_id = ?",
