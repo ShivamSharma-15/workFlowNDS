@@ -27,14 +27,16 @@ app.set("trust proxy", 1);
 app.use(sessionMiddleware);
 // Routes for meta
 const metaWebhookRoute = require("./routes/metaRoute.js");
+const leadViewRoute = require("./routes/leadViewRoute.js");
 const normalRoutes = require("./routes/normalRoutes.js");
 app.use("/meta/instant-form", metaWebhookRoute);
 app.use("/", normalRoutes);
-
+app.use("/apps/leadsmart/leads-view", leadViewRoute);
 const path = require("path");
 app.use(
   express.static(path.join(__dirname, "..", "..", "frontend", "landing"))
 );
+app.use(express.static(path.join(__dirname, "..", "..", "frontend", "leads")));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on 0.0.0.0:3000");
