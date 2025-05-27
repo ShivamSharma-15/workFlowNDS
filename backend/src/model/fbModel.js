@@ -35,27 +35,38 @@ async function saveUser(userAccessToken, userName, userId) {
 }
 
 async function savePage(pages, userId) {
-  const insertQuery = `
-    INSERT INTO facebook_pages (user_id, page_id, page_name, page_access_token)
-    VALUES (?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE
-      page_id = page_id
-  `;
+  const conn = await pool.getConnection();
 
   try {
-    const insertPromises = pages.map((page) =>
-      pool.query(insertQuery, [
-        userId,
-        page.id,
-        page.name || null,
-        page.access_token,
-      ])
-    );
+    await conn.beginTransaction();
 
-    await Promise.allSettled(insertPromises);
+    for (const page of pages) {
+      const [rows] = await conn.query(
+        "SELECT user_id FROM facebook_pages WHERE page_id = ?",
+        [page.id]
+      );
+
+      if (rows.length === 0) {
+        // Page doesn't exist → insert it
+        await conn.query(
+          "INSERT INTO facebook_pages (user_id, page_id, page_name, page_access_token) VALUES (?, ?, ?, ?)",
+          [userId, page.id, page.name || null, page.access_token]
+        );
+      } else if (rows[0].user_id === userId) {
+        await conn.query(
+          "UPDATE facebook_pages SET page_name = ?, page_access_token = ? WHERE page_id = ? AND user_id = ?",
+          [page.name || null, page.access_token, page.id, userId]
+        );
+      }
+    }
+
+    await conn.commit();
   } catch (err) {
+    await conn.rollback();
     console.error("Error saving pages:", err);
     throw err;
+  } finally {
+    conn.release();
   }
 }
 
