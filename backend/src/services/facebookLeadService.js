@@ -156,7 +156,7 @@ async function whatsappMessageSender(formName, formatData, formatContact) {
     type: "template",
     template: {
       name: "instant_form_received",
-      language: { code: "en_US" },
+      language: { code: "en" },
       components: [
         {
           type: "body",
