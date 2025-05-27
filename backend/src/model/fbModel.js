@@ -1,5 +1,4 @@
 const pool = require("../config/db");
-const { leadAdded } = require("../services/facebookLeadService");
 
 async function saveUser(userAccessToken, userName) {
   try {
@@ -51,6 +50,7 @@ async function subscribe(successfulSubs) {
   await Promise.all(promises);
 }
 async function getPageAccessToken(page_id) {
+  console.log(page_id);
   try {
     const [rows] = await pool.query(
       "SELECT page_access_token FROM facebook_pages WHERE page_id = ?",
@@ -59,7 +59,7 @@ async function getPageAccessToken(page_id) {
     if (rows.length !== 1) return null;
     else return rows[0].page_access_token;
   } catch (err) {
-    console.log("Could not find" + " " + page_id);
+    console.log("Could not find", err);
   }
 }
 async function leadAddDb(leadData, lead) {
