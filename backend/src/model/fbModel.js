@@ -62,17 +62,41 @@ async function getPageAccessToken(page_id) {
     console.log("Could not find", err);
   }
 }
-async function getSecretCode(page_id) {
-  const page_id_str = String(page_id).trim();
+async function getSecretCode(page_id, lead_id) {
+  const connection = await pool.getConnection();
   try {
-    const [rows] = await pool.query(
-      "SELECT secret_code FROM facebook_pages WHERE page_id = ?",
-      [page_id_str]
+    await connection.beginTransaction();
+    const [pages] = await connection.execute(
+      `SELECT id FROM facebook_pages WHERE page_id = ?`,
+      [page_id]
     );
-    if (rows.length !== 1) return null;
-    else return rows[0];
-  } catch (err) {
-    console.log("Could not find", err);
+
+    if (pages.length === 0) {
+      await connection.rollback();
+      return null; // No matching page found
+    }
+
+    const internalPageId = pages[0].id;
+
+    // Step 2: Find the lead based on page_id and secret_code
+    const [code] = await connection.execute(
+      `SELECT secret_code FROM fb_leads WHERE page_id = ? AND lead_id = ?`,
+      [internalPageId, lead_id]
+    );
+
+    await connection.commit();
+
+    if (code.length === 0) {
+      return null; // No matching lead found
+    }
+
+    return code[0]; // Return the lead_data JSON
+  } catch (error) {
+    await connection.rollback();
+    console.error("Error during getting secret code:", error);
+    return null;
+  } finally {
+    connection.release();
   }
 }
 async function leadAddDb(leadData, lead, idPage, createdAt, string) {
