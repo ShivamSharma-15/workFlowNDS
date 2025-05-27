@@ -42,11 +42,10 @@ const loginSuccess = async function (req, res) {
   const userAccessToken = req.user.accessToken;
   const userName = req.user.displayName;
   const saveUser = await getFbUser(userAccessToken, userName);
-  const pages = getAllFbPages(userAccessToken);
+  const pages = await getAllFbPages(userAccessToken);
   const savePage = await getFbPages(pages, saveUser);
   if (pages && savePage) {
-    const subscriptionResults = subscribeToAllPages(pages);
-    const successfulSubs = subscribeToAllPages(pages);
+    const successfulSubs = await subscribeToAllPages(pages);
     if (successfulSubs) {
       const saveSubscription = await isSubbed(successfulSubs);
     }
