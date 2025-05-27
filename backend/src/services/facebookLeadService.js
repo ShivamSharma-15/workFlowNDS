@@ -116,7 +116,7 @@ async function leadAdded(lead) {
     return null;
   }
 }
-export async function sendWhatsappUpdate(lead) {
+async function sendWhatsappUpdate(lead) {
   const pageAccessTokenRow = await getPageAccessToken(page_id);
   const pageAccessToken = pageAccessTokenRow.page_access_token;
   const form_id = lead?.form_id;
