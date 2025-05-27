@@ -51,12 +51,13 @@ async function subscribe(successfulSubs) {
 }
 async function getPageAccessToken(page_id) {
   console.log(page_id);
-  const page_id_str = String(page_id);
+  const page_id_str = String(page_id).trim();
   try {
     const [rows] = await pool.query(
       "SELECT page_access_token FROM facebook_pages WHERE page_id = ?",
       [page_id_str]
     );
+    console.log("DB rows:", rows);
     if (rows.length !== 1) return null;
     else return rows[0].page_access_token;
   } catch (err) {
