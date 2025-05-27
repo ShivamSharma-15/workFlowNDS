@@ -5,6 +5,7 @@ const {
   leadAddDb,
   getPageAccessToken,
 } = require("../model/fbModel");
+require("dotenv").config();
 const axios = require("axios");
 async function getFbUser(userAccessToken, userName) {
   const saveUsers = saveUser(userAccessToken, userName);
@@ -147,8 +148,8 @@ async function sendWhatsappUpdate(lead, leadAdd) {
   }
 }
 async function whatsappMessageSender(formName, formatData, formatContact) {
-  console.log(`${formName}, ${formatData}, ${formatContact}`);
-  const leadDetails = formatData.join("\n");
+  const accessToken = process.env.WA_TOKEN;
+  const leadDetails = formatData.join(" || ");
   const data = {
     messaging_product: "whatsapp",
     to: "917697876527",
@@ -160,10 +161,18 @@ async function whatsappMessageSender(formName, formatData, formatContact) {
         {
           type: "body",
           parameters: [
-            { type: "text", text: formName },
-            { type: "text", text: formatContact.fullName },
-            { type: "text", text: formatContact.phoneNumber },
-            { type: "text", text: leadDetails },
+            { type: "text", parameter_name: "form_name", text: formName },
+            {
+              type: "text",
+              parameter_name: "name",
+              text: formatContact.fullName,
+            },
+            {
+              type: "text",
+              parameter_name: "number",
+              text: formatContact.phoneNumber,
+            },
+            { type: "text", parameter_name: "details", text: leadDetails },
           ],
         },
       ],
@@ -173,7 +182,13 @@ async function whatsappMessageSender(formName, formatData, formatContact) {
   try {
     const response = await axios.post(
       "https://graph.facebook.com/v22.0/539610682577776/messages",
-      data
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
 
     console.log("Message sent:", response.data);
