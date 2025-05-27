@@ -79,7 +79,7 @@ async function leadAddDb(leadData, lead) {
     if (rows.affectedRows !== 1) return null;
     else return true;
   } catch (err) {
-    console.log("Could not find");
+    console.log("Could not find this");
   }
 }
 module.exports = {
