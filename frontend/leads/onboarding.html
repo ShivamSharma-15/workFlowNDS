@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Page</title>
+    <link rel="stylesheet" href="/css/leadStyle.css" />
+  </head>
+
+  <body>
+    <div class="sp-outer">
+      <div class="sp-card">
+        <div class="sp-card-header">
+          <h1>Create Account</h1>
+          <div class="logo">
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/assets/logo-mini.png"
+                alt="Company Logo"
+                class="logo"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="sp-form">
+          <form id="onboardForm">
+            <div class="sp-form-outer">
+              <div class="sp-form-field">
+                <label for="name">Contact Person Name</label>
+                <input type="text" id="nameForm" placeholder="john Doe" />
+                <span>Please enter your full name.</span>
+              </div>
+
+              <div class="sp-form-field">
+                <label for="name">Contact Person Number</label>
+                <input type="tel" id="numberForm" placeholder="919876543210" />
+                <span>Please enter your phone number</span>
+              </div>
+
+              <div class="sp-form-field">
+                <label for="name">Contact Person Email</label>
+                <input
+                  type="email"
+                  id="emailForm"
+                  placeholder="example@gmail.com"
+                />
+                <span>Please enter your email address</span>
+              </div>
+
+              <div class="sp-form-field">
+                <label for="name">Facebook Page ID</label>
+                <input
+                  type="text"
+                  id="fbIdForm"
+                  placeholder="123456789012345"
+                />
+                <span
+                  >Enter the numeric ID of your Facebook page. You can find it
+                  in your page's settings or URL.</span
+                >
+              </div>
+
+              <div class="sp-form-field">
+                <label for="name">Upload Brand Image</label>
+                <input
+                  type="file"
+                  name=""
+                  id="brandImageForm"
+                  accept="image/png, image/jpeg"
+                />
+                <span class="sp-file-size">Max Size: 200kb</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="sp-switch-box">
+                <h2>Notification Settings</h2>
+                <div class="switch-box-outer">
+                  <div class="email-switch">
+                    <p>Email</p>
+                    <label class="switch">
+                      <input id="subEmail" type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="whatsapp-switch">
+                    <p>WhatsApp</p>
+                    <label class="switch">
+                      <input id="subWhatsapp" type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="sp-email-box">
+                <h3>Email Notification Settings</h3>
+                <div class="sp-form-field">
+                  <label for="name">Receiver's Email</label>
+                  <input
+                    type="text"
+                    id="emailSubEmail"
+                    placeholder="example@gmail.com"
+                  />
+                  <span
+                    >Enter the email address where you want to send the
+                    message.</span
+                  >
+                </div>
+
+                <div class="sp-form-field">
+                  <label for="name">CC (Carbon Copy)</label>
+                  <input
+                    type="text"
+                    id="ccSubEmail"
+                    placeholder="cc1@example.com, cc2@example.com"
+                  />
+                  <span
+                    >Add one or more recipient email addresses, separated by
+                    commas.</span
+                  >
+                </div>
+
+                <div class="lead-checkbox sp-switch-box">
+                  <p>Send Confirmation Email to Lead</p>
+                  <label class="switch">
+                    <input id="EmailCheckBox" type="checkbox" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="sp-whatsapp-box">
+                <div class="sp-form-field">
+                  <label for="name">Phone Number</label>
+                  <input
+                    type="text"
+                    id="waSubNumber"
+                    placeholder="919876543210, 919876543211"
+                  />
+                  <span
+                    >Enter phone numbers with country code, separated by commas.
+                    No spaces or special characters.</span
+                  >
+                </div>
+
+                <div class="lead-checkbox sp-switch-box">
+                  <p>Send Confirmation WhatsApp Message to Lead</p>
+                  <label class="switch">
+                    <input id="WhatsappCheckBox" type="checkbox" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="sp-form-submit">
+              <div class="sp-form-field">
+                <button id="submitOnboard" type="submit">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="sp-footer">
+          <p>Created By NDS Studio</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

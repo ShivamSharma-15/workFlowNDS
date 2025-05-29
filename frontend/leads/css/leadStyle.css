@@ -16,9 +16,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 20px;
   background-color: #f6f6f6;
-  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .sp-card {
@@ -28,6 +28,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .sp-card-header {
   display: flex;
   align-items: center;
@@ -80,4 +81,184 @@ h1 {
   padding: 10px;
   font-weight: 400;
   border-top: 1px solid #ddd;
+}
+/* Form CSS */
+.sp-form-outer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.sp-form-field {
+  display: flex;
+  flex-direction: column;
+}
+.sp-form-field label {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.sp-form-field input {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.sp-form-field button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  background-color: #222;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+.sp-form-field button:hover {
+  transform: scale(1.05);
+}
+.sp-form-field span {
+  font-size: 12px;
+  color: #808080;
+  text-align: end;
+  margin-top: 5px;
+  visibility: hidden;
+}
+
+.sp-form-field input:focus + span {
+  visibility: visible;
+}
+
+.sp-file-size {
+  visibility: visible !important;
+  position: static !important;
+}
+
+.sp-switch-box {
+  padding: 0px 20px 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.switch-box-outer {
+  display: flex;
+  gap: 20px;
+  justify-content: end;
+}
+
+.sp-email-box,
+.sp-whatsapp-box {
+  padding: 20px;
+  display: none;
+  border-top: 1px solid #ddd;
+}
+
+.sp-switch-box .email-switch,
+.sp-switch-box .whatsapp-switch {
+  display: flex;
+  gap: 10px;
+}
+
+.sp-switch-box p {
+  font-weight: 600;
+}
+
+.sp-switch-box h2 {
+  font-size: 18px;
+}
+
+.sp-email-box h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+body:has(.sp-switch-box .email-switch input:checked) .sp-email-box {
+  display: block;
+}
+body:has(.sp-switch-box .whatsapp-switch input:checked) .sp-whatsapp-box {
+  display: block;
+}
+
+.sp-form-submit {
+  padding: 20px 20px 20px 20px;
+  border-top: 1px solid #ddd;
+}
+
+.lead-checkbox {
+  padding: 0px;
+  margin-top: 10px;
+}
+
+/* Switch */
+.sp-switch-box .switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+/* Hide the default checkbox */
+.sp-switch-box .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider background */
+.sp-switch-box .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* The circle knob */
+.sp-switch-box .slider::before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Toggle ON state */
+.sp-switch-box input:checked + .slider {
+  background-color: #222;
+}
+
+.sp-switch-box input:checked + .slider::before {
+  transform: translateX(18px);
+}
+
+@media screen and (max-width: 767px) {
+  .sp-form-outer,
+  .sp-email-box,
+  .sp-whatsapp-box {
+    position: relative;
+    padding-bottom: 50px;
+  }
+  .sp-form-field span {
+    position: absolute;
+    bottom: 10px;
+    text-align: start;
+    left: 20px;
+    right: 20px;
+    margin-top: 0px;
+  }
+  .sp-form-field input {
+    margin-bottom: 10px;
+  }
+
+  .sp-switch-box {
+    flex-direction: column;
+    align-items: start;
+  }
 }

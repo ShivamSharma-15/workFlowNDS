@@ -30,3 +30,11 @@ CREATE TABLE fb_leads (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (page_id) REFERENCES facebook_pages(id) ON DELETE CASCADE
 );
+CREATE TABLE client_onboarding (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    cc_list VARCHAR(255),
+    phone_number_list VARCHAR(255),
+    facebook_page_id VARCHAR(255) UNIQUE
+);
