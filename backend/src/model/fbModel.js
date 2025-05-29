@@ -156,6 +156,20 @@ async function leadAddDb(leadData, lead, idPage, createdAt, string) {
     console.log("cannot insert the lead", err);
   }
 }
+async function getPageNotifDetailsWa(page_id) {
+  const page_id_str = String(page_id).trim();
+  try {
+    const [rows] = await pool.query(
+      "SELECT wa_sub, notif_number, wa_notif_lead FROM client_onboarding WHERE page_id = ?",
+      [page_id_str]
+    );
+    if (rows.length !== 1) return null;
+    else return rows[0];
+  } catch (err) {
+    console.log("Could not find", err);
+    return null;
+  }
+}
 module.exports = {
   saveUser,
   savePage,
@@ -163,4 +177,5 @@ module.exports = {
   getPageAccessToken,
   leadAddDb,
   getSecretCode,
+  getPageNotifDetailsWa,
 };

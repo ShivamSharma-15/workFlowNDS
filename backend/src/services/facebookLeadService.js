@@ -6,6 +6,7 @@ const {
   leadAddDb,
   getPageAccessToken,
   getSecretCode,
+  getPageNotifDetailsWa,
 } = require("../model/fbModel");
 require("dotenv").config();
 const axios = require("axios");
@@ -129,6 +130,13 @@ async function leadAdded(lead) {
   }
 }
 async function sendWhatsappUpdate(lead, leadAdd) {
+  const sendNotif = getPageNotifDetailsWa(lead?.page_id);
+  if (!sendNotif) {
+    return null;
+  }
+  if (sendNotif.wa_sub === 0) {
+    return true;
+  }
   const page_id = lead?.page_id;
   const lead_id = lead?.leadgen_id;
   const pageAccessTokenRow = await getPageAccessToken(page_id);
@@ -150,10 +158,13 @@ async function sendWhatsappUpdate(lead, leadAdd) {
     formName = formData.name;
     formatData = formattingLead(leadAdd);
     formatContact = extractContactInfo(leadAdd);
+    const sendNotifNumbersString = sendNotif.notif_number;
+    const sendNotifNumbers = sendNotifNumbersString.split(",");
     const messageSent = await whatsappMessageSender(
       formName,
       formatContact,
-      linkString
+      linkString,
+      sendNotifNumbers
     );
     if (!messageSent) {
       return null;
@@ -163,68 +174,75 @@ async function sendWhatsappUpdate(lead, leadAdd) {
     return null;
   }
 }
-async function whatsappMessageSender(formName, formatContact, linkString) {
+async function whatsappMessageSender(
+  formName,
+  formatContact,
+  linkString,
+  sendNotifNumbers
+) {
   const accessToken = process.env.WA_TOKEN;
-  const data = {
-    messaging_product: "whatsapp",
-    to: "917697876527",
-    type: "template",
-    template: {
-      name: "instant_form_received",
-      language: { code: "en" },
-      components: [
-        {
-          type: "header",
-          parameters: [
-            { type: "text", parameter_name: "form_name", text: formName },
-          ],
-        },
-        {
-          type: "body",
-          parameters: [
-            {
-              type: "text",
-              parameter_name: "name",
-              text: formatContact.fullName,
-            },
-            {
-              type: "text",
-              parameter_name: "number",
-              text: formatContact.phoneNumber,
-            },
-            {
-              type: "text",
-              parameter_name: "email",
-              text: formatContact.email,
-            },
-          ],
-        },
-        {
-          type: "button",
-          sub_type: "url",
-          index: 0,
-          parameters: [{ type: "text", text: `/leads-view/${linkString}` }],
-        },
-      ],
-    },
-  };
+  for (let i = 0; i < sendNotifNumbers.length; i++) {
+    const data = {
+      messaging_product: "whatsapp",
+      to: `${sendNotifNumbers[i]}`,
+      type: "template",
+      template: {
+        name: "instant_form_received",
+        language: { code: "en" },
+        components: [
+          {
+            type: "header",
+            parameters: [
+              { type: "text", parameter_name: "form_name", text: formName },
+            ],
+          },
+          {
+            type: "body",
+            parameters: [
+              {
+                type: "text",
+                parameter_name: "name",
+                text: formatContact.fullName,
+              },
+              {
+                type: "text",
+                parameter_name: "number",
+                text: formatContact.phoneNumber,
+              },
+              {
+                type: "text",
+                parameter_name: "email",
+                text: formatContact.email,
+              },
+            ],
+          },
+          {
+            type: "button",
+            sub_type: "url",
+            index: 0,
+            parameters: [{ type: "text", text: `/leads-view/${linkString}` }],
+          },
+        ],
+      },
+    };
 
-  try {
-    const response = await axios.post(
-      "https://graph.facebook.com/v22.0/539610682577776/messages",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  } catch (error) {
-    console.error(
-      "Error sending message:",
-      error.response?.data || error.message
-    );
+    try {
+      const response = await axios.post(
+        "https://graph.facebook.com/v22.0/539610682577776/messages",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.error(
+        "Error sending message:",
+        error.response?.data || error.message
+      );
+    }
   }
 }
 function formatToMySQLDateTime(input) {
