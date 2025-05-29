@@ -131,7 +131,6 @@ async function leadAdded(lead) {
 }
 async function sendWhatsappUpdate(lead, leadAdd) {
   const sendNotif = await getPageNotifDetailsWa(lead?.page_id);
-  console.log("sendNotif:", sendNotif);
   if (!sendNotif) {
     return null;
   }
@@ -167,6 +166,18 @@ async function sendWhatsappUpdate(lead, leadAdd) {
       linkString,
       sendNotifNumbers
     );
+    const brandName = sendNotif.brandName;
+    if (sendNotif.wa_notif_to_lead === 1) {
+      // edit left here
+      const firstName = formatContact.fullName.split(" ");
+      const websiteURL = `${page_id}/redirect?${sendNotif.website_url}`;
+      sendNotifToLead = await whatsappMessageSenderLead(
+        formatContact,
+        firstName,
+        brandName,
+        websiteURL
+      );
+    }
     if (!messageSent) {
       return null;
     } else return true;
@@ -244,6 +255,70 @@ async function whatsappMessageSender(
         error.response?.data || error.message
       );
     }
+  }
+}
+async function whatsappMessageSenderLead(
+  formatContact,
+  firstName,
+  brandName,
+  websiteURL
+) {
+  const accessToken = process.env.WA_TOKEN;
+  const data = {
+    messaging_product: "whatsapp",
+    to: `${formatContact.phoneNumber}`,
+    type: "template",
+    template: {
+      name: "thankyou_on_lead",
+      language: { code: "en" },
+      components: [
+        {
+          type: "image",
+          image: {
+            link: "https://nds.studio/wp-content/uploads/2023/02/nds-1-1.png",
+          },
+        },
+        {
+          type: "body",
+          parameters: [
+            {
+              type: "text",
+              parameter_name: "name",
+              text: firstName,
+            },
+            {
+              type: "text",
+              parameter_name: "brand_name",
+              text: brandName,
+            },
+          ],
+        },
+        {
+          type: "button",
+          sub_type: "url",
+          index: 0,
+          parameters: [{ type: "text", text: `/leads-view/${websiteURL}` }],
+        },
+      ],
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      "https://graph.facebook.com/v22.0/539610682577776/messages",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.error(
+      "Error sending message:",
+      error.response?.data || error.message
+    );
   }
 }
 function formatToMySQLDateTime(input) {
