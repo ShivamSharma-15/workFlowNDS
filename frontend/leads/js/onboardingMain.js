@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append(key, bodyFields[key]);
     }
 
-    fetch("/apps/leadsmart/onboarding", {
+    fetch("/apps/leadsmart/onboarding/", {
       method: "POST",
       body: formData,
     })
