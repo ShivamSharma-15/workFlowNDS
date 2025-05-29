@@ -166,11 +166,16 @@ async function sendWhatsappUpdate(lead, leadAdd) {
       linkString,
       sendNotifNumbers
     );
-    const brandName = sendNotif.brandName;
+
     if (sendNotif.wa_notif_to_lead === 1) {
       // edit left here
-      const firstName = formatContact.fullName.split(" ");
+      const firstNameA = formatContact.fullName.split(" ");
+      const firstName = firstNameA[0];
+      console.log(firstName);
       const websiteURL = `${page_id}/redirect?${sendNotif.website_url}`;
+      console.log(websiteURL);
+      const brandName = sendNotif.brand_name;
+      console.log(brandName);
       sendNotifToLead = await whatsappMessageSenderLead(
         formatContact,
         firstName,
@@ -289,7 +294,7 @@ async function whatsappMessageSenderLead(
             {
               type: "text",
               parameter_name: "name",
-              text: firstName[0],
+              text: firstName,
             },
             {
               type: "text",
