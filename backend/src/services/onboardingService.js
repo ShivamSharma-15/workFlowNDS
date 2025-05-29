@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { saveOnboardingClient } = require("../model/onboardingClientModel");
 
 const processOnboardingData = async (fields, file) => {
-  console.log(fields.fbPageId);
+  console.log(fields.fbPageIdF);
   if (!file) {
     throw new Error("Image file is required.");
   }
@@ -23,7 +23,7 @@ const processOnboardingData = async (fields, file) => {
   const timestamp = Date.now();
   const randomStr = crypto.randomBytes(3).toString("hex"); // 6 hex characters
   const ext = path.extname(file.originalname).toLowerCase();
-  const safeFbId = fields.fbPageId.replace(/[^a-zA-Z0-9]/g, "");
+  const safeFbId = fields.fbPageIdF.replace(/[^a-zA-Z0-9]/g, "");
 
   const customFileName = `${safeFbId}_${timestamp}_${randomStr}${ext}`;
   const destinationPath = path.join(uploadDir, customFileName);
