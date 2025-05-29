@@ -307,7 +307,7 @@ async function whatsappMessageSenderLead(
           type: "button",
           sub_type: "url",
           index: 0,
-          parameters: [{ type: "text", text: `/leads-view/${websiteURL}` }],
+          parameters: [{ type: "text", text: `${websiteURL}` }],
         },
       ],
     },

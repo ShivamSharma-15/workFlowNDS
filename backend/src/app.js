@@ -30,10 +30,12 @@ const metaWebhookRoute = require("./routes/metaRoute.js");
 const leadViewRoute = require("./routes/leadViewRoute.js");
 const normalRoutes = require("./routes/normalRoutes.js");
 const onboardingRoutes = require("./routes/onboardingRoutes.js");
+const redirectRoute = require("./routes/redirectRoute.js");
 app.use("/meta/instant-form", metaWebhookRoute);
 app.use("/", normalRoutes);
 app.use("/apps/leadsmart/leads-view", leadViewRoute);
 app.use("/apps/leadsmart/onboarding", onboardingRoutes);
+app.use("/app/leadsmart/redirect", redirectRoute);
 const path = require("path");
 app.use(
   express.static(path.join(__dirname, "..", "..", "frontend", "landing"))
