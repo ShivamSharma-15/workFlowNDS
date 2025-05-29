@@ -53,8 +53,7 @@ const onboardingValidator = [
         value === "" ||
         value === "null"
       )
-        return true; // skip validation
-      return true;
+        return true;
     })
     .isEmail()
     .withMessage("Invalid recipient email")
