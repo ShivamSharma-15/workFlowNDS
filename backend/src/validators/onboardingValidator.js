@@ -46,7 +46,10 @@ const onboardingValidator = [
     .withMessage("subWAF must be true or false"),
 
   body("recEmailF")
-    .optional({ checkFalsy: true })
+    .custom((value) => {
+      if (value === undefined || value === null || value === "") return true; // skip validation
+      return true;
+    })
     .isEmail()
     .withMessage("Invalid recipient email")
     .isLength({ max: 100 }),
