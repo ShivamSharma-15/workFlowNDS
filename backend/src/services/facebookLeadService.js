@@ -170,7 +170,6 @@ async function sendWhatsappUpdate(lead, leadAdd) {
     if (sendNotif.wa_notif_to_lead === 1) {
       // edit left here
       const firstName = formatContact.fullName.split(" ");
-      console.log(firstName);
       const websiteURL = `${page_id}/redirect?${sendNotif.website_url}`;
       sendNotifToLead = await whatsappMessageSenderLead(
         formatContact,
@@ -290,7 +289,7 @@ async function whatsappMessageSenderLead(
             {
               type: "text",
               parameter_name: "name",
-              text: firstName,
+              text: firstName[0],
             },
             {
               type: "text",
