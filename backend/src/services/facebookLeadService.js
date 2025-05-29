@@ -131,6 +131,7 @@ async function leadAdded(lead) {
 }
 async function sendWhatsappUpdate(lead, leadAdd) {
   const sendNotif = getPageNotifDetailsWa(lead?.page_id);
+  console.log("sendNotif:", sendNotif);
   if (!sendNotif) {
     return null;
   }
