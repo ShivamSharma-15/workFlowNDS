@@ -273,10 +273,15 @@ async function whatsappMessageSenderLead(
       language: { code: "en" },
       components: [
         {
-          type: "image",
-          image: {
-            link: "https://nds.studio/wp-content/uploads/2023/02/nds-1-1.png",
-          },
+          type: "header",
+          parameters: [
+            {
+              type: "image",
+              image: {
+                link: "https://nds.studio/wp-content/uploads/2023/02/nds-1-1.png",
+              },
+            },
+          ],
         },
         {
           type: "body",
