@@ -46,21 +46,12 @@ const onboardingValidator = [
     .withMessage("subWAF must be true or false"),
 
   body("recEmailF")
-    .custom((value) => {
-      if (
-        value === undefined ||
-        value === null ||
-        value === "" ||
-        value === "null"
-      )
-        return true;
-    })
+    .if((value) => value && value !== "null") // only run below rules if non-empty and not "null"
     .isEmail()
     .withMessage("Invalid recipient email")
     .isLength({ max: 100 }),
-
   body("ccEmailF")
-    .optional({ checkFalsy: true })
+    .if((value) => value && value !== "null")
     .customSanitizer((value) =>
       value
         .split(",")
@@ -84,7 +75,7 @@ const onboardingValidator = [
     .withMessage("sendEmailToLeadF must be true or false"),
 
   body("waSubbedNumberF")
-    .optional({ checkFalsy: true })
+    .if((value) => value && value !== "null")
     .customSanitizer((value) =>
       value
         .split(",")
