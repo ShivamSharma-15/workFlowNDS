@@ -30,7 +30,8 @@ const processOnboardingData = async (fields, file) => {
 
   try {
     // Move file from temp to final destination
-    fs.renameSync(file.path, destinationPath);
+    fs.copyFileSync(file.path, destinationPath);
+    fs.unlinkSync(file.path);
 
     const fullData = {
       name: fields.nameF,
