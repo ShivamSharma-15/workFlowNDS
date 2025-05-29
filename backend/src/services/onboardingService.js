@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const { saveOnboardingClient } = require("../model/onboardingClientModel");
 
 const processOnboardingData = async (fields, file) => {
+  console.log(safeFbId);
   if (!file) {
     throw new Error("Image file is required.");
   }
