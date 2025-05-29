@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const { saveOnboardingClient } = require("../models/onboardingClientModel");
+const { saveOnboardingClient } = require("../model/onboardingClientModel");
 
 const processOnboardingData = async (fields, file) => {
   if (!file) {
