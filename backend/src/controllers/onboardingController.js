@@ -1,7 +1,6 @@
 require("dotenv").config();
 const { processOnboardingData } = require("../services/onboardingService");
 const onboardClient = async (req, res) => {
-  console.log("hji");
   try {
     const result = await processOnboardingData(req.body, req.file);
     console.log(result);
