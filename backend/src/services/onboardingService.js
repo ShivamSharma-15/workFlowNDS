@@ -8,7 +8,13 @@ const processOnboardingData = async (fields, file) => {
     throw new Error("Image file is required.");
   }
 
-  const uploadDir = path.join(__dirname, "..", "clientAssets", "brandImages");
+  const uploadDir = path.join(
+    __dirname,
+    "..",
+    "..",
+    "clientAssets",
+    "brandImages"
+  );
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
   }

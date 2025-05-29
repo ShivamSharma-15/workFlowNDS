@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 
 // TEMP directory where files are first saved
-const tempDir = path.join(__dirname, "..", "uploads", "tmp");
+const tempDir = path.join(__dirname, "..", "..", "uploads", "tmp");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
