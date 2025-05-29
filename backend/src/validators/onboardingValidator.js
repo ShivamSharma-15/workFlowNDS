@@ -47,7 +47,13 @@ const onboardingValidator = [
 
   body("recEmailF")
     .custom((value) => {
-      if (value === undefined || value === null || value === "") return true; // skip validation
+      if (
+        value === undefined ||
+        value === null ||
+        value === "" ||
+        value === "null"
+      )
+        return true; // skip validation
       return true;
     })
     .isEmail()
