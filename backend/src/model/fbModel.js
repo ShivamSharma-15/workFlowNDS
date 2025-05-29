@@ -160,7 +160,7 @@ async function getPageNotifDetailsWa(page_id) {
   const page_id_str = String(page_id).trim();
   try {
     const [rows] = await pool.query(
-      "SELECT wa_sub, notif_number, wa_notif_to_lead FROM client_onboarding WHERE page_id = ?",
+      "SELECT wa_sub, notif_number, wa_notif_to_lead FROM client_onboarding WHERE fb_page_id = ?",
       [page_id_str]
     );
     if (rows.length !== 1) return null;
