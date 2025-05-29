@@ -21,7 +21,7 @@ const processOnboardingData = async (fields, file) => {
   }
 
   const timestamp = Date.now();
-  const randomStr = crypto.randomBytes(3).toString("hex"); // 6 hex characters
+  const randomStr = crypto.randomBytes(3).toString("hex");
   const ext = path.extname(file.originalname).toLowerCase();
   const safeFbId = fields.fbPageIdF.replace(/[^a-zA-Z0-9]/g, "");
 
@@ -29,7 +29,6 @@ const processOnboardingData = async (fields, file) => {
   const destinationPath = path.join(uploadDir, customFileName);
 
   try {
-    // Move file from temp to final destination
     fs.copyFileSync(file.path, destinationPath);
     fs.unlinkSync(file.path);
 
@@ -47,9 +46,10 @@ const processOnboardingData = async (fields, file) => {
       notifNumber: fields.waSubbedNumberF || null,
       waNotifToLead:
         fields.sendWaToLeadF === "true" || fields.sendWaToLeadF === true,
+      brandName: fields.brandNameF,
+      websiteUrl: fields.webisteURLF,
       imageFileName: customFileName,
     };
-    // Save to DB via model
     const dbResult = await saveOnboardingClient(fullData);
 
     return dbResult;

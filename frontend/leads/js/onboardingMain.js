@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendEmailToLead = document.getElementById("EmailCheckBox");
   const waSubbedNumber = document.getElementById("waSubNumber");
   const sendWaToLead = document.getElementById("WhatsappCheckBox");
+  const brandName = document.getElementById("brandName");
+  const webisteURL = document.getElementById("websiteUrl");
   const form = document.getElementById("onboardForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -21,12 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const brandImageF = isValidBrandImage(brandImage)
       ? brandImage.files[0]
       : null;
+    const brandNameF = isValidName(brandName.value);
+    const websiteURLF = isValidURL(webisteURL.value);
     if (
       numberF === null ||
       nameF === null ||
       emailF === null ||
       fbPageIdF === null ||
-      brandImageF === null
+      brandImageF === null ||
+      brandNameF === null ||
+      websiteURLF === null
     ) {
       return alert("Incorrect form data");
     }
@@ -87,6 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
       sendEmailToLeadF,
       waSubbedNumberF,
       sendWaToLeadF,
+      brandNameF,
+      webisteURLF,
     });
     const formData = new FormData();
 
@@ -124,6 +132,25 @@ function isValidNumber(number) {
     return null;
   }
 }
+function isValidURL(input) {
+  if (typeof input !== "string") return null;
+
+  const trimmed = input.trim();
+
+  try {
+    const url = new URL(trimmed);
+    if (url.protocol !== "https:") return null;
+    if (url.search || url.hash) return null;
+    if (!url.pathname || url.pathname === "/") return null;
+
+    let sanitized = `${url.origin}${url.pathname.replace(/\/$/, "")}`;
+
+    return sanitized;
+  } catch {
+    return null;
+  }
+}
+
 function isValidEmail(email) {
   const trimmedInput = email.trim();
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

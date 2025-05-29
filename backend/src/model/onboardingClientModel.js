@@ -14,6 +14,8 @@ const saveOnboardingClient = async (data) => {
     waSub,
     notifNumber,
     waNotifToLead,
+    brandName,
+    websiteUrl,
   } = data;
 
   const sql = `
@@ -29,8 +31,10 @@ const saveOnboardingClient = async (data) => {
       email_notif_to_lead,
       wa_sub,
       notif_number,
-      wa_notif_to_lead
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      wa_notif_to_lead,
+      brand_name,
+      website_url
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
@@ -46,6 +50,8 @@ const saveOnboardingClient = async (data) => {
     waSub,
     notifNumber || null,
     waNotifToLead,
+    brandName,
+    websiteUrl,
   ];
 
   const [result] = await pool.execute(sql, values);
