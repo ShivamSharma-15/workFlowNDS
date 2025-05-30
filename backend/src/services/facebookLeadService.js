@@ -254,6 +254,7 @@ async function whatsappMessageSender(
           },
         }
       );
+      console.log(response);
     } catch (error) {
       console.error(
         "Error sending message:",
@@ -324,6 +325,7 @@ async function whatsappMessageSenderLead(
         },
       }
     );
+    console.log(response);
   } catch (error) {
     console.error(
       "Error sending message:",
