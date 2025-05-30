@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("../middleware/passportFacebook");
 const controller = require("../controllers/metaController");
-const verifyMetaSignature = require("../middleware/metaMiddleware");
+const { verifyMetaSignature } = require("../middleware/metaMiddleware");
 const path = require("path");
 const {
   metaWebhookHandshake,
