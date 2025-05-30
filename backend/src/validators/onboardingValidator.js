@@ -131,10 +131,6 @@ const onboardingValidator = [
       }
 
       return true;
-    })
-    .customSanitizer((value) => {
-      const url = new URL(value.trim());
-      return `${url.origin}${url.pathname.replace(/\/$/, "")}`;
     }),
 ];
 

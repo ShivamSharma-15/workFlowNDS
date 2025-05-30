@@ -50,8 +50,8 @@ const saveOnboardingClient = async (data) => {
     waSub,
     notifNumber || null,
     waNotifToLead,
-    brandName ?? null,
-    websiteUrl ?? null,
+    brandName,
+    websiteUrl,
   ];
 
   const [result] = await pool.execute(sql, values);
