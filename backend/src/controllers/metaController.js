@@ -22,7 +22,7 @@ const metaWebhookHandshake = async (req, res) => {
 };
 const metaWebhookPing = async (req, res) => {
   const body = req.body;
-  console.log(req);
+  console.log(body);
   if (body.object === "page") {
     for (const entry of body.entry) {
       const lead = entry.changes?.[0]?.value;
