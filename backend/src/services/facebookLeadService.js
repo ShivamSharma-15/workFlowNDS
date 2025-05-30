@@ -172,7 +172,7 @@ async function sendWhatsappUpdate(lead, leadAdd) {
       const firstNameA = formatContact.fullName.split(" ");
       const firstName = firstNameA[0];
       console.log(firstName);
-      const websiteURL = `${page_id}/redirect?${sendNotif.website_url}`;
+      const websiteURL = `${page_id}/redirect?url=${sendNotif.website_url}`;
       console.log(websiteURL);
       const brandName = sendNotif.brand_name;
       console.log(brandName);
