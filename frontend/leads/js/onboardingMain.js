@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       waSubbedNumberF,
       sendWaToLeadF,
       brandNameF,
-      webisiteURLF,
+      websiteURLF,
     });
     const formData = new FormData();
 
