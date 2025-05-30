@@ -104,7 +104,42 @@ const onboardingValidator = [
     .optional({ checkFalsy: true })
     .isBoolean()
     .withMessage("sendWaToLeadF must be true or false"),
-  body("websiteURLF").notEmpty().withMessage("Website URL is required").bail(),
+  body("websiteURLF")
+    .notEmpty()
+    .withMessage("Website URL is required")
+    .bail()
+    .custom((value) => {
+      if (typeof value !== "string") {
+        throw new Error("Website URL must be a string");
+      }
+
+      const trimmed = value.trim();
+
+      let url;
+      try {
+        url = new URL(trimmed);
+      } catch {
+        throw new Error("Invalid URL format");
+      }
+
+      if (url.protocol !== "https:") {
+        throw new Error("URL must use HTTPS");
+      }
+
+      if (url.search || url.hash) {
+        throw new Error("URL must not contain query parameters or hash");
+      }
+
+      if (!url.pathname || url.pathname === "/") {
+        throw new Error("URL must include a valid path");
+      }
+
+      return true;
+    })
+    .customSanitizer((value) => {
+      const url = new URL(value.trim());
+      return `${url.origin}${url.pathname.replace(/\/$/, "")}`;
+    }),
 ];
 
 module.exports = onboardingValidator;

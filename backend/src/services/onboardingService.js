@@ -47,7 +47,7 @@ const processOnboardingData = async (fields, file) => {
       waNotifToLead:
         fields.sendWaToLeadF === "true" || fields.sendWaToLeadF === true,
       brandName: fields.brandNameF,
-      websiteUrl: fields.webisteURLF,
+      websiteUrl: fields.websiteURLF,
       imageFileName: customFileName,
     };
     console.log(fullData);
