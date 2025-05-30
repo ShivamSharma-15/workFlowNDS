@@ -168,6 +168,7 @@ function isValidName(name) {
   }
   const cleanedName = trimmedInput.replace(/[^a-zA-Z\s-']/g, "");
   const normalizedName = cleanedName.replace(/\s+/g, " ").trim();
+  console.log(normalizedName);
   if (normalizedName.length > 0 && normalizedName.length < 100) {
     return normalizedName;
   } else {
