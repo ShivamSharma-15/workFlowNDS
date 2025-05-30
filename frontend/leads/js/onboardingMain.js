@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ? brandImage.files[0]
       : null;
     const brandNameF = isValidName(brandName.value);
-    const websiteURLF = isValidURL(webisteURL.value);
+    const websiteURLF = webisteURL.value;
     if (
       numberF === null ||
       nameF === null ||
