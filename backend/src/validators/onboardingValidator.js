@@ -9,7 +9,7 @@ const onboardingValidator = [
     .isLength({ max: 50 })
     .withMessage("Name too long"),
 
-  body("brandF")
+  body("brandNameF")
     .notEmpty()
     .withMessage("Brand name is required")
     .isAlpha("en-US", { ignore: " " })
