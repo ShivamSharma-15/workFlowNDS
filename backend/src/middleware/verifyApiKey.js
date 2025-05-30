@@ -8,7 +8,7 @@ async function verifyApiKey(req, res, next) {
     }
 
     const keyExists = await poolWeb.query(
-      "SELECT * FROM api_keys WHERE key = ?",
+      "SELECT * FROM api_keys WHERE key_value = ?",
       [apiKey]
     );
     if (!keyExists.length) {
