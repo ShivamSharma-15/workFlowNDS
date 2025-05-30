@@ -130,10 +130,6 @@ const onboardingValidator = [
         throw new Error("URL must not contain query parameters or hash");
       }
 
-      if (!url.pathname || url.pathname === "/") {
-        throw new Error("URL must include a valid path");
-      }
-
       return true;
     })
     .customSanitizer((value) => {
