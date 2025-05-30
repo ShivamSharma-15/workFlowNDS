@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 require("dotenv").config();
-const APP_SECRET = process.env.META_VERIFY_TOKEN;
+
+const APP_SECRET = process.env.META_APP_SECRET; // Make sure this is set in .env!
 
 const verifyMetaSignature = (req, res, next) => {
   const signature = req.headers["x-hub-signature"];
@@ -8,6 +9,11 @@ const verifyMetaSignature = (req, res, next) => {
   if (!signature) {
     console.warn("Missing X-Hub-Signature");
     return res.sendStatus(403);
+  }
+
+  if (!req.rawBody) {
+    console.warn("Missing rawBody on request");
+    return res.sendStatus(400);
   }
 
   const [method, hash] = signature.split("=");
@@ -24,6 +30,7 @@ const verifyMetaSignature = (req, res, next) => {
 
   next();
 };
+
 module.exports = {
   verifyMetaSignature,
 };
