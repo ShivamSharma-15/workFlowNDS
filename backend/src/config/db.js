@@ -10,8 +10,8 @@ const pool = mysql.createPool({
   database: dbConfig.database,
 });
 const poolWeb = mysql.createPool({
-  host: website_handler,
-  user: website_account,
+  host: dbConfigWeb.website_handler,
+  user: dbConfigWeb.website_account,
   password: dbConfigWeb.password,
   database: dbConfig.database,
 });
