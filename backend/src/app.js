@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const sessionMiddleware = require("./middleware/session");
+const { enforceHttps } = require("./middleware/httpsMandate.js");
 const { limiter } = require("./middleware/limiter");
 const helmet = require("helmet");
 require("dotenv").config();
@@ -24,18 +25,21 @@ app.use(
   })
 );
 app.set("trust proxy", 1);
+// app.use(enforceHttps);
 app.use(sessionMiddleware);
-// Routes for meta
+
 const metaWebhookRoute = require("./routes/metaRoute.js");
 const leadViewRoute = require("./routes/leadViewRoute.js");
 const normalRoutes = require("./routes/normalRoutes.js");
 const onboardingRoutes = require("./routes/onboardingRoutes.js");
 const redirectRoute = require("./routes/redirectRoute.js");
+const externalLeadRoute = require("./routes/externalLeadRoute.js");
 app.use("/meta/instant-form", metaWebhookRoute);
 app.use("/", normalRoutes);
 app.use("/apps/leadsmart/leads-view", leadViewRoute);
 app.use("/apps/leadsmart/onboarding", onboardingRoutes);
 app.use("/app/leadsmart/redirect", redirectRoute);
+app.use("/app/leadsmart/website-form", externalLeadRoute);
 const path = require("path");
 app.use(
   express.static(path.join(__dirname, "..", "..", "frontend", "landing"))
