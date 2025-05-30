@@ -254,12 +254,16 @@ async function whatsappMessageSender(
           },
         }
       );
-      console.log(response);
+      console.log("Status:", response.status);
+      console.log("Data:", JSON.stringify(response.data, null, 2));
     } catch (error) {
-      console.error(
-        "Error sending message:",
-        error.response?.data || error.message
-      );
+      if (error.response) {
+        console.error("Status:", error.response.status);
+        console.error("Headers:", error.response.headers);
+        console.error("Data:", JSON.stringify(error.response.data, null, 2));
+      } else {
+        console.error("Error:", error.message);
+      }
     }
   }
 }
@@ -325,12 +329,16 @@ async function whatsappMessageSenderLead(
         },
       }
     );
-    console.log(response);
+    console.log("Status:", response.status);
+    console.log("Data:", JSON.stringify(response.data, null, 2));
   } catch (error) {
-    console.error(
-      "Error sending message:",
-      error.response?.data || error.message
-    );
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Headers:", error.response.headers);
+      console.error("Data:", JSON.stringify(error.response.data, null, 2));
+    } else {
+      console.error("Error:", error.message);
+    }
   }
 }
 function formatToMySQLDateTime(input) {
