@@ -50,6 +50,7 @@ const processOnboardingData = async (fields, file) => {
       websiteUrl: fields.webisteURLF,
       imageFileName: customFileName,
     };
+    console.log(fullData);
     const dbResult = await saveOnboardingClient(fullData);
 
     return dbResult;
