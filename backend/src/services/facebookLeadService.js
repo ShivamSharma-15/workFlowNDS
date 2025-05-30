@@ -154,10 +154,11 @@ async function sendWhatsappUpdate(lead, leadAdd) {
         },
       }
     );
-    formData = response.data;
-    formName = formData.name;
-    formatData = formattingLead(leadAdd);
-    formatContact = extractContactInfo(leadAdd);
+    const formData = response.data;
+    const formNameTemp = formData.name;
+    const formName = formNameTemp.substring(0, 8);
+
+    const formatContact = extractContactInfo(leadAdd);
     const sendNotifNumbersString = sendNotif.notif_number;
     const sendNotifNumbers = sendNotifNumbersString.split(",");
     const messageSent = await whatsappMessageSender(
