@@ -230,7 +230,10 @@ async function whatsappMessageSender(
               {
                 type: "text",
                 parameter_name: "email",
-                text: formatContact.email,
+                text:
+                  formatContact.email != null
+                    ? formatContact.email
+                    : "Not Provided",
               },
             ],
           },
